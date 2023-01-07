@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Carbon\Carbon;
+use App\Enums\ProductStatus;
 
 class ProductController extends Controller
 {
@@ -25,7 +27,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        $productStatuses = ProductStatus::asSelectArray();
+
+        return view('admin.products.create', compact('productStatuses'));
     }
 
     /**
@@ -36,14 +40,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // ディレクトリ名
-        $dir = 'image';
+        $fileName = Carbon::now()->format("YmdHis") . '_' . $request->file('image')->getClientOriginalName();
 
-        // アップロードされたファイル名を取得
-        $fileName = date('YmdHis') . '_' . $request->file('image')->getClientOriginalName();
-
-        // 取得したファイル名で保存
-        $request->file('image')->storeAs('public/' . $dir, $fileName);
+        $request->file('image')->storeAs('public/image', $fileName);
 
         Product::create([
             'name' => $request->name,
