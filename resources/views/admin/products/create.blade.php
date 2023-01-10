@@ -53,7 +53,7 @@
                         </div>
 
                         <div class="p-2 w-full">
-                            <x-blue-button>
+                            <x-blue-button class="flex mx-auto">
                                 新規登録する
                             </x-blue-button>
                         </div>

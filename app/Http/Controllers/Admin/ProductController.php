@@ -15,9 +15,14 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.products.index');
+        $search = $request->search;
+        $query = Product::search($search);
+
+        $products = $query->paginate(5);
+
+        return view('admin.products.index', compact('products'));
     }
 
     /**
