@@ -17,10 +17,12 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $maxRecords = 5;
+
         $search = $request->search;
         $query = Product::search($search);
 
-        $products = $query->paginate(5);
+        $products = $query->paginate($maxRecords);
 
         return view('admin.products.index', compact('products'));
     }
