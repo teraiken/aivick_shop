@@ -46,8 +46,8 @@
                         <div class="p-2 w-full">
                         <div class="relative">
                             <x-input-label>ステータス</x-input-label><br>
-                            @foreach($productStatuses as $value => $status)
-                                <input type="radio" name="status" value="{{ $value }}">{{ $status }}
+                            @foreach($productStatuses as $productStatus)
+                                <input type="radio" name="status" value="{{ $productStatus->value }}">{{ $productStatus->label() }}
                             @endforeach
                         </div>
                         </div>

@@ -27,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $productStatuses = ProductStatus::asSelectArray();
+        $productStatuses = ProductStatus::cases();
 
         return view('admin.products.create', compact('productStatuses'));
     }

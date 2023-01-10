@@ -1,24 +1,18 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class ProductStatus extends Enum
+enum ProductStatus: int
 {
-    const ACTIVE = 1;
-    const INACTIVE = 9;
+    case Active = 1;
+    case Inactive = 9;
 
-    public static function getDescription($value): string
+    public function label(): string
     {
-        if ($value === self::ACTIVE) {
-            return '販売中';
-        }
-
-        if ($value === self::INACTIVE) {
-            return '販売停止中';
-        }
-
-        return parent::getDescription($value);
+        return match($this)
+        {
+            ProductStatus::Active => '販売中',
+            ProductStatus::Inactive => '販売停止中',
+        };
     }
 }
