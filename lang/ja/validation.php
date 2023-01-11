@@ -154,8 +154,12 @@ return [
     */
 
     'attributes' => [
-        'name' => '氏名',
+        'name' => '名',
         'email' => 'メールアドレス',
-        'password' => 'パスワード'
+        'password' => 'パスワード',
+        'image' => '画像',
+        'introduction' => '説明文',
+        'price' => '価格',
+        'status' => 'ステータス',
     ],
 ];
