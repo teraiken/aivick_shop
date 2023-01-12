@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Carbon\Carbon;
 use App\Enums\ProductStatus;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -22,7 +25,7 @@ class ProductController extends Controller
         $search = $request->search;
         $query = Product::search($search);
 
-        $products = $query->paginate($maxRecords);
+        $products = $query->orderBy('id', 'desc')->paginate($maxRecords);
 
         return view('admin.products.index', compact('products'));
     }
@@ -45,7 +48,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         $fileName = Carbon::now()->format("YmdHis") . '_' . $request->file('image')->getClientOriginalName();
 
@@ -56,6 +59,7 @@ class ProductController extends Controller
             'image' => $fileName,
             'introduction' => $request->introduction,
             'price' => $request->price,
+            'stock' => $request->stock,
             'status' => $request->status,
         ]);
 
@@ -70,7 +74,11 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+
+        $productStatus = ProductStatus::from($product->status);
+
+        return view('admin.products.show', compact('product', 'productStatus'));
     }
 
     /**
@@ -81,7 +89,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::find($id);
+
+        $productStatuses = ProductStatus::cases();
+
+        return view('admin.products.edit', compact('product', 'productStatuses'));
     }
 
     /**
@@ -91,9 +103,25 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        //
+        $product = Product::find($id);
+
+        Storage::delete('public/image/' . $product->image);
+
+        $fileName = Carbon::now()->format("YmdHis") . '_' . $request->file('image')->getClientOriginalName();
+
+        $request->file('image')->storeAs('public/image', $fileName);
+
+        $product->name = $request->name;
+        $product->image = $fileName;
+        $product->introduction = $request->introduction;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->status = $request->status;
+        $product->save();
+
+        return to_route('admin.products.index');
     }
 
     /**
@@ -104,6 +132,14 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::transaction(function () use ($id) {
+            $product = Product::find($id);
+
+            $product->delete();
+
+            Storage::delete('public/image/' . $product->image);
+        });
+
+        return to_route('admin.products.index');
     }
 }
