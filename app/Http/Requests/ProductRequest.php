@@ -29,8 +29,8 @@ class ProductRequest extends FormRequest
             'name' => ['required', 'string'],
             'image' => ['required', 'image'],
             'introduction' => ['required', 'string'],
-            'price' => ['required', 'integer'],
-            'stock' => ['required', 'integer'],
+            'price' => ['required', 'integer', 'min:0'],
+            'stock' => ['required', 'integer', 'min:0'],
             'status' => ['required', new Enum(ProductStatus::class)],
         ];
     }

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Enums\ProductStatus;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -131,11 +132,13 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
+        DB::transaction(function () use ($id) {
+            $product = Product::find($id);
 
-        Storage::delete('public/image/' . $product->image);
+            $product->delete();
 
-        $product->delete();
+            Storage::delete('public/image/' . $product->image);
+        });
 
         return to_route('admin.products.index');
     }
