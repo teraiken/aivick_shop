@@ -58,6 +58,7 @@ class ProductController extends Controller
             'image' => $fileName,
             'introduction' => $request->introduction,
             'price' => $request->price,
+            'stock' => $request->stock,
             'status' => $request->status,
         ]);
 
@@ -115,6 +116,7 @@ class ProductController extends Controller
         $product->image = $fileName;
         $product->introduction = $request->introduction;
         $product->price = $request->price;
+        $product->stock = $request->stock;
         $product->status = $request->status;
         $product->save();
 

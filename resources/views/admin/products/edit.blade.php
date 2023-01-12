@@ -50,6 +50,14 @@
 
                         <div class="p-2 w-full">
                         <div class="relative">
+                            <x-input-label for="stock">在庫数</x-input-label>
+                            <x-text-input type="number" id="stock" name="stock" value="{{ $product->stock }}" />
+                            <x-input-error :messages="$errors->get('stock')" class="mt-2" />
+                        </div>
+                        </div>
+
+                        <div class="p-2 w-full">
+                        <div class="relative">
                             <x-input-label>ステータス</x-input-label><br>
                             @foreach($productStatuses as $productStatus)
                                 <input type="radio" name="status" value="{{ $productStatus->value }}" @if($product->status === $productStatus->value) checked @endif>{{ $productStatus->label() }}

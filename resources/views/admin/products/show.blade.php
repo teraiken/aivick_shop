@@ -43,6 +43,13 @@
 
                         <div class="p-2 w-full">
                         <div class="relative">
+                            <x-input-label for="stock">在庫数</x-input-label>
+                            <x-text-show>{{ $product->stock }}</x-text-show>
+                        </div>
+                        </div>
+
+                        <div class="p-2 w-full">
+                        <div class="relative">
                             <x-input-label>ステータス</x-input-label><br>
                             <x-text-show>{{ $productStatus->label() }}</x-text-show>
                         </div>
