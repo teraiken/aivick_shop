@@ -7,7 +7,7 @@ use Tests\TestCase;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\UploadedFile;
 
-class ProductTest extends TestCase
+class ProductRequestTest extends TestCase
 {
     /**
      * @dataProvider validationProvider

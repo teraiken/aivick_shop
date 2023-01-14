@@ -18,7 +18,7 @@
                         <div class="p-2 w-full">
                         <div class="relative">
                             <x-input-label for="name">宛名</x-input-label>
-                            <x-text-input type="text" id="name" name="name" value="{{ old('name') }}" />
+                            <x-text-input type="text" id="name" name="name" value="{{ old('name') }}" required />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
                         </div>
@@ -26,7 +26,7 @@
                         <div class="p-2 w-full">
                         <div class="relative">
                             <x-input-label for="postal_code">郵便番号</x-input-label>
-                            <x-text-input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code') }}" placeholder="1000001" onKeyUp="AjaxZip3.zip2addr(this,'','pref_id','address1','address2');" />
+                            <x-text-input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code') }}" required placeholder="1000001" onKeyUp="AjaxZip3.zip2addr(this,'','pref_id','address1','address2');" />
                             <x-input-error :messages="$errors->get('postal_code')" class="mt-2" />
                         </div>
                         </div>
@@ -34,7 +34,7 @@
                         <div class="p-2 w-1/2">
                         <div class="relative">
                             <x-input-label for="pref_id">都道府県</x-input-label><br>
-                            <select name="pref_id">
+                            <select name="pref_id" required>
                                 <option value="">選択してください</option>
                                 @foreach(config('pref') as $pref_id => $name)
                                     <option value="{{ $pref_id }}" {{ old('pref_id') == $pref_id ? 'selected' : ''}}>{{ $name }}</option>
@@ -47,7 +47,7 @@
                         <div class="p-2 w-1/2">
                         <div class="relative">
                             <x-input-label for="address1">市区町村</x-input-label>
-                            <x-text-input type="text" id="address1" name="address1" value="{{ old('address1') }}" />
+                            <x-text-input type="text" id="address1" name="address1" value="{{ old('address1') }}" required />
                             <x-input-error :messages="$errors->get('address1')" class="mt-2" />
                         </div>
                         </div>
@@ -55,7 +55,7 @@
                         <div class="p-2 w-full">
                         <div class="relative">
                             <x-input-label for="address2">以降の住所</x-input-label>
-                            <x-text-input type="text" id="address2" name="address2" value="{{ old('address2') }}" />
+                            <x-text-input type="text" id="address2" name="address2" value="{{ old('address2') }}" required />
                             <x-input-error :messages="$errors->get('address2')" class="mt-2" />
                         </div>
                         </div>
@@ -63,7 +63,7 @@
                         <div class="p-2 w-full">
                         <div class="relative">
                             <x-input-label for="phone_number">電話番号</x-input-label>
-                            <x-text-input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" placeholder="08000000000" />
+                            <x-text-input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" required placeholder="08000000000" />
                             <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
                         </div>
                         </div>
