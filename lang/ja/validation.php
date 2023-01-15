@@ -162,5 +162,10 @@ return [
         'price' => '価格',
         'stock' => '在庫数',
         'status' => 'ステータス',
+        'postal_code' => '郵便番号',
+        'pref_id' => '都道府県',
+        'address1' => '市区町村',
+        'address2' => '住所',
+        'phone_number' => '電話番号',
     ],
 ];
