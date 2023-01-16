@@ -62,7 +62,7 @@ class AddressController extends Controller
      */
     public function edit($id)
     {
-        $address = Address::find($id);
+        $address = Address::whereUserId(Auth::id())->find($id);
 
         return view('addresses.edit', compact('address'));
     }
@@ -76,7 +76,7 @@ class AddressController extends Controller
      */
     public function update(AddressRequest $request, $id)
     {
-        $address = Address::find($id);
+        $address = Address::whereUserId(Auth::id())->find($id);
 
         $address->name = $request->name;
         $address->postal_code = $request->postal_code;
@@ -97,7 +97,7 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-        $address = Address::find($id);
+        $address = Address::whereUserId(Auth::id())->find($id);
 
         $address->delete();
 

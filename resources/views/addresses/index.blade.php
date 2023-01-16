@@ -29,11 +29,11 @@
                                     </x-blue-button>
                                 </form>
 
-                                <form class="ml-4" method="post" action="{{ route('addresses.destroy', ['address' => $address->id]) }}">
+                                <form class="ml-4" method="post" action="{{ route('addresses.destroy', ['address' => $address->id]) }}" onsubmit="return alert();">
                                     @csrf
                                     @method('delete')
                                     
-                                    <x-danger-button onclick="deleteAlert(event);return false;">
+                                    <x-danger-button>
                                         削除
                                     </x-danger-button>
                                 </form>
@@ -48,4 +48,13 @@
             </div>
         </div>
     </div>
+<script>
+function alert(){
+  if(window.confirm('本当に削除しますか？')) { 
+    return true;
+  } else {
+    return false; 
+  }
+}
+</script>
 </x-app-layout>
