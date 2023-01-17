@@ -55,17 +55,6 @@ class AddressController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -73,7 +62,9 @@ class AddressController extends Controller
      */
     public function edit($id)
     {
-        //
+        $address = Address::whereUserId(Auth::id())->find($id);
+
+        return view('addresses.edit', compact('address'));
     }
 
     /**
@@ -83,9 +74,19 @@ class AddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AddressRequest $request, $id)
     {
-        //
+        $address = Address::whereUserId(Auth::id())->find($id);
+
+        $address->name = $request->name;
+        $address->postal_code = $request->postal_code;
+        $address->pref_id = $request->pref_id;
+        $address->address1 = $request->address1;
+        $address->address2 = $request->address2;
+        $address->phone_number = $request->phone_number;
+        $address->save();
+
+        return to_route('addresses.index');
     }
 
     /**
@@ -96,6 +97,10 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $address = Address::whereUserId(Auth::id())->find($id);
+
+        $address->delete();
+
+        return to_route('addresses.index');
     }
 }
