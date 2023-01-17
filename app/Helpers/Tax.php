@@ -4,7 +4,7 @@ namespace App\Helpers;
  
 class Tax
 {
-    public static function add($price)
+    public static function add(int $price): int
     {
         $tax = 10;
         
