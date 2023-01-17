@@ -23,7 +23,7 @@
                                 <div class="p-6">
                                     <h1 class="title-font text-lg font-medium text-gray-900 mb-3">{{ $product->name }}</h1>
                                     <p class="leading-relaxed mb-3">{{ $product->introduction }}</p>
-                                    <p class="leading-relaxed mb-3">¥{{ number_format($product->price) }} (税込¥{{ number_format(addTax($product->price)) }})</p>
+                                    <p class="leading-relaxed mb-3">¥{{ number_format($product->price) }} (税込¥{{ number_format(App\Helpers\Tax::add($product->price)) }})</p>
                                 </div>
                                 <div class="absolute bottom-0 p-6">
                                 @if ($product->stock !== 0)
