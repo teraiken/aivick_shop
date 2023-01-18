@@ -27,8 +27,9 @@
                                 </div>
                                 <div class="absolute bottom-0 p-6">
                                 @if ($product->stock !== 0)
-                                    <form method="post">
+                                    <form method="post" action="{{ route('cart.add')}}">
                                         @csrf
+                                        <input type="hidden" name="id" value="{{ $product->id }}">
                                         <select name="quantity" required>
                                             <option value="">個数</option>
                                             @for($quantity = 1; $quantity <= $product->stock; $quantity++):

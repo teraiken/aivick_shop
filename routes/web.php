@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,14 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('addresses', AddressController::class);
     Route::resource('products', ProductController::class);
+
+    Route::prefix('cart')->controller(CartController::class)->name('cart.')->group(function() {
+        Route::get('/','index')->name('index');
+        Route::post('/add','add')->name('add');
+        Route::post('/update','update')->name('update');
+        Route::post('/remove','remove')->name('remove');
+        Route::post('/destroy','destroy')->name('destroy');
+    });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
