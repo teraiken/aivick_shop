@@ -11,14 +11,14 @@
                 <div class="p-6 text-gray-900">
                     <div class="lg:w-3/4 w-full mx-auto overflow-auto">
                     @if (session('errorMessage'))
-                        <div class="text-red-500">
-                            {{ session('errorMessage') }}
-                        </div>
+                    <x-error-message class="mb-8">
+                        {{ session('errorMessage') }}
+                    </x-error-message>
                     @endif
 
                     @if (!is_array(session('cart')))
                         <div class="text-red-500">
-                            現在、お客様のカートには商品がありません。商品をお選びください。
+                            {{ __('cart.none') }}
                         </div>
                     @else
                         <div class="text-right">
@@ -65,12 +65,11 @@
                                         <form method="post" action="{{ route('cart.update')}}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $product['id'] }}">
-                                            <select name="quantity" required>
-                                            @for($quantity = 1; $quantity <= $product['stock']; $quantity++):
+                                            <select name="quantity" required onchange="submit(this.form)">
+                                            @for($quantity = 1; $quantity <= \App\Models\Product::find($product['id'])->stock; $quantity++):
                                                 <option value="{{ $quantity }}" {{ $product['quantity'] == $quantity ? 'selected' : ''}}>{{ $quantity }}</option>
                                             @endfor;
                                             </select>
-                                            <x-primary-button class="ml-2">変更</x-primary-button>
                                         </form>
                                     </td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">
@@ -90,7 +89,7 @@
                                     <td class="border-t-2 border-gray-200 px-4 py-3"></td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3"></td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">
-                                        ¥{{ number_format(App\Helpers\Tax::add($total)) }}
+                                        ¥{{ number_format(App\Helpers\Tax::add(App\Helpers\Sum::array(session('cart')))) }}
                                     </td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3"></td>
                                 </tr>

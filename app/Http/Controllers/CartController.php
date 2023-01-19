@@ -8,24 +8,40 @@ use App\Enums\ProductStatus;
 
 class CartController extends Controller
 {
-    public function index(Request $request)
+    private function checkStockForAdd(array $product)
     {
-        $total = 0;
-
-        $sessionCart = $request->session()->get('cart');
-
-        if (is_array($sessionCart)) {
-            foreach ($sessionCart as $value) {
-                $total += $value['price'] * $value['quantity'];
-            }
+        if ($product['stock'] >= $product['quantity']) {
+            session()->put('cart.' . $product['id'], $product);
+            session()->flash('successMessage', __('cart.add_success'));
+        } else {
+            session()->flash('errorMessage', __('cart.add_failed'));
         }
+    }
 
-        return view('cart.index', compact('total'));
+    private function checkStockForUpdate(array $product, int $quantity)
+    {
+        if ($product['stock'] >= $quantity) {
+            session()->put('cart.' . $product['id'] . '.quantity', $quantity);
+            session()->flash('successMessage', __('cart.add_success'));
+        } else {
+            session()->put('cart.' . $product['id'] . '.quantity', $product['stock']);
+            session()->flash('errorMessage', __('cart.add_failed'));
+        }
+    }
+
+    public function index()
+    {
+        return view('cart.index');
     }
 
     public function add(Request $request)
     {
-        $product = Product::whereStatus(ProductStatus::Active->value)->where('stock', '>', 0)->find($request->id);
+        $product = Product::whereStatus(ProductStatus::Active->value)->find($request->id);
+
+        if (is_null($product)) {
+            session()->flash('errorMessage', __('cart.invalid_operation'));
+            return to_route('products.index');
+        }
 
         $addProduct = [
             'id' => $request->id, 
@@ -36,44 +52,24 @@ class CartController extends Controller
             'quantity' => $request->quantity, 
         ];
 
-        $sessionCart = $request->session()->get('cart');
-
-        if (!is_array($sessionCart)) {
-            if ($addProduct['stock'] >= $addProduct['quantity']) {
-                $request->session()->push('cart', $addProduct);
-            } else {
-                session()->flash('errorMessage', '※' . $addProduct['name'] .'は、在庫が不足しております。');
-            }
+        if (!array_key_exists($addProduct['id'], session('cart', []))) {
+            $this->checkStockForAdd($addProduct);
         } else {
-            $productExists = false;
-            foreach ($sessionCart as $index => $value) {
-                if ($value['id'] === $addProduct['id'] ) {
-                    $productExists = true;
-                    $AddQuantity = $value['quantity'] + $addProduct['quantity'];
-                    if ($addProduct['stock'] >= $AddQuantity) {
-                        $request->session()->put('cart.' . $index . '.quantity', $AddQuantity);
-                    } else {
-                        session()->flash('errorMessage', '※' . $addProduct['name'] .'は、在庫が不足しております。');
-                    }
-                    break;
-                }
-            }
-
-            if ($productExists === false) {
-                if ($addProduct['stock'] >= $addProduct['quantity']) {
-                    $request->session()->push('cart', $addProduct);
-                } else {
-                    session()->flash('errorMessage', '※' . $addProduct['name'] .'は、在庫が不足しております。');
-                }
-            }
+            $AddQuantity = session('cart')[$addProduct['id']]['quantity'] + $addProduct['quantity'];
+            $this->checkStockForUpdate($addProduct, $AddQuantity);
         }
-        
-        return to_route('cart.index');
+
+        return to_route('products.index');
     }
 
     public function update(Request $request)
     {
-        $product = Product::whereStatus(ProductStatus::Active->value)->where('stock', '>', 0)->find($request->id);
+        $product = Product::whereStatus(ProductStatus::Active->value)->find($request->id);
+
+        if (is_null($product)) {
+            session()->flash('errorMessage', __('cart.invalid_operation'));
+            return to_route('cart.index');
+        }
 
         $updateProduct = [
             'id' => $request->id, 
@@ -81,19 +77,7 @@ class CartController extends Controller
             'quantity' => $request->quantity,
         ];
 
-        $sessionCart = $request->session()->get('cart');
-
-        foreach ($sessionCart as $index => $value) {
-            if ($value['id'] === $updateProduct['id'] ) {
-                $updateQuantity = $updateProduct['quantity'];
-                if ($updateProduct['stock'] >= $updateQuantity) {
-                    $request->session()->put('cart.' . $index . '.quantity', $updateQuantity);
-                } else {
-                    session()->flash('errorMessage', '※' . $value['name'] .'は、在庫が不足しております。');
-                }
-                break;
-            }
-        }
+        $this->checkStockForUpdate($updateProduct, $updateProduct['quantity']);
 
         return to_route('cart.index');
     }
@@ -104,25 +88,18 @@ class CartController extends Controller
             'id' => $request->id, 
         ];
 
-        $sessionCart = $request->session()->get('cart');
+        session()->forget('cart.' . $removeProduct['id']);
 
-        foreach ($sessionCart as $index => $value) {
-            if ($value['id'] === $removeProduct['id'] ) {
-                unset($sessionCart[$index]);
-                $request->session()->put('cart', array_values($sessionCart));
-                if (empty($sessionCart)) {
-                    $request->session()->forget('cart');
-                }
-                break;
-            }
+        if (empty(session('cart'))) {
+            session()->forget('cart');
         }
 
         return to_route('cart.index');
     }
 
-    public function destroy(Request $request) 
+    public function destroy() 
     {
-        $request->session()->forget('cart');
+        session()->forget('cart');
 
         return to_route('cart.index');
     }

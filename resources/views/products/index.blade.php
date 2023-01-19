@@ -11,6 +11,18 @@
                 <div class="p-6 text-gray-900">
                     <section class="text-gray-600 body-font">
                     <div class="container px-5 mx-auto">
+                        @if (session('successMessage'))
+                        <x-success-message class="mb-8">
+                            {{ session('successMessage') }}
+                        </x-success-message>
+                        @endif
+
+                        @if (session('errorMessage'))
+                        <x-error-message class="mb-8">
+                            {{ session('errorMessage') }}
+                        </x-error-message>
+                        @endif
+                        
                         <form class="mb-8" method="get" action="{{ route('products.index') }}">
                             <x-search-form></x-search-form>
                         </form>
