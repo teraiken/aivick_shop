@@ -15,6 +15,14 @@
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
                         商品一覧
                     </x-nav-link>
+                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                        カート
+                        @if (is_array(session('cart')))
+                        <div class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0">
+                            {{count(session('cart')) }}
+                        </div>
+                        @endif
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -72,6 +80,14 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
                 商品一覧
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                カート
+                @if (is_array(session('cart')))
+                <div class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white flex-shrink-0">
+                    {{count(session('cart')) }}
+                </div>
+                @endif
             </x-responsive-nav-link>
         </div>
 

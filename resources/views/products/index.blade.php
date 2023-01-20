@@ -11,6 +11,18 @@
                 <div class="p-6 text-gray-900">
                     <section class="text-gray-600 body-font">
                     <div class="container px-5 mx-auto">
+                        @if (session('successMessage'))
+                        <x-success-message class="mb-8">
+                            {{ session('successMessage') }}
+                        </x-success-message>
+                        @endif
+
+                        @if (session('errorMessage'))
+                        <x-error-message class="mb-8">
+                            {{ session('errorMessage') }}
+                        </x-error-message>
+                        @endif
+                        
                         <form class="mb-8" method="get" action="{{ route('products.index') }}">
                             <x-search-form></x-search-form>
                         </form>
@@ -27,8 +39,9 @@
                                 </div>
                                 <div class="absolute bottom-0 p-6">
                                 @if ($product->stock !== 0)
-                                    <form method="post">
+                                    <form method="post" action="{{ route('cart.add')}}">
                                         @csrf
+                                        <input type="hidden" name="id" value="{{ $product->id }}">
                                         <select name="quantity" required>
                                             <option value="">個数</option>
                                             @for($quantity = 1; $quantity <= $product->stock; $quantity++):
