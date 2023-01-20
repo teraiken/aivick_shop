@@ -8,27 +8,6 @@ use App\Enums\ProductStatus;
 
 class CartController extends Controller
 {
-    private function checkStockForAdd(array $product)
-    {
-        if ($product['stock'] >= $product['quantity']) {
-            session()->put('cart.' . $product['id'], $product);
-            session()->flash('successMessage', __('cart.add_success'));
-        } else {
-            session()->flash('errorMessage', __('cart.add_failed'));
-        }
-    }
-
-    private function checkStockForUpdate(array $product, int $quantity)
-    {
-        if ($product['stock'] >= $quantity) {
-            session()->put('cart.' . $product['id'] . '.quantity', $quantity);
-            session()->flash('successMessage', __('cart.add_success'));
-        } else {
-            session()->put('cart.' . $product['id'] . '.quantity', $product['stock']);
-            session()->flash('errorMessage', __('cart.add_failed'));
-        }
-    }
-
     public function index()
     {
         return view('cart.index');
@@ -102,5 +81,26 @@ class CartController extends Controller
         session()->forget('cart');
 
         return to_route('cart.index');
+    }
+
+    private function checkStockForAdd(array $product)
+    {
+        if ($product['stock'] >= $product['quantity']) {
+            session()->put('cart.' . $product['id'], $product);
+            session()->flash('successMessage', __('cart.add_success'));
+        } else {
+            session()->flash('errorMessage', __('cart.add_failed'));
+        }
+    }
+
+    private function checkStockForUpdate(array $product, int $quantity)
+    {
+        if ($product['stock'] >= $quantity) {
+            session()->put('cart.' . $product['id'] . '.quantity', $quantity);
+            session()->flash('successMessage', __('cart.add_success'));
+        } else {
+            session()->put('cart.' . $product['id'] . '.quantity', $product['stock']);
+            session()->flash('errorMessage', __('cart.add_failed'));
+        }
     }
 }

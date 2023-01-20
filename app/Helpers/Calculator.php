@@ -2,9 +2,9 @@
  
 namespace App\Helpers;
  
-class Sum
+class Calculator
 {
-  public static function array(array $array): int
+  public static function arraySum(array $array): int
   {
     $total = 0;
     

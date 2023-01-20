@@ -1,3 +1,11 @@
+<?php
+
+use App\Models\Product;
+use App\Helpers\Tax;
+use App\Helpers\Calculator;
+
+?>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -59,27 +67,27 @@
                                         </section>
                                     </td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">
-                                        ¥{{ number_format(App\Helpers\Tax::add($product['price'])) }}
+                                        ¥{{ number_format(Tax::add($product['price'])) }}
                                     </td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">
                                         <form method="post" action="{{ route('cart.update')}}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $product['id'] }}">
                                             <select name="quantity" required onchange="submit(this.form)">
-                                            @for($quantity = 1; $quantity <= \App\Models\Product::find($product['id'])->stock; $quantity++):
+                                            @for($quantity = 1; $quantity <= Product::find($product['id'])->stock; $quantity++):
                                                 <option value="{{ $quantity }}" {{ $product['quantity'] == $quantity ? 'selected' : ''}}>{{ $quantity }}</option>
                                             @endfor;
                                             </select>
                                         </form>
                                     </td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">
-                                        ¥{{ number_format(App\Helpers\Tax::add($product['price'] * $product['quantity'])) }}
+                                        ¥{{ number_format(Tax::add($product['price'] * $product['quantity'])) }}
                                     </td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">
                                         <form method="post" action="{{ route('cart.remove')}}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $product['id'] }}">
-                                            <x-primary-button>削除</x-prima-button>
+                                            <x-small-danger-button>削除</x-small-danger-button>
                                         </form>
                                     </td>
                                 </tr>
@@ -89,7 +97,7 @@
                                     <td class="border-t-2 border-gray-200 px-4 py-3"></td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3"></td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3">
-                                        ¥{{ number_format(App\Helpers\Tax::add(App\Helpers\Sum::array(session('cart')))) }}
+                                        ¥{{ number_format(Tax::add(Calculator::arraySum(session('cart')))) }}
                                     </td>
                                     <td class="border-t-2 border-gray-200 px-4 py-3"></td>
                                 </tr>
