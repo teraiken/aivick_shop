@@ -1,7 +1,9 @@
 <?php
  
 namespace App\Helpers;
- 
+
+use App\Models\Order;
+
 class Calculator
 {
   public static function arraySum(array $array): int
@@ -12,6 +14,21 @@ class Calculator
       $total += $value['price'] * $value['quantity'];
     }
     
+    return $total;
+  }
+
+  public static function orderSum(Order $order): int
+  {
+    $subTotal = 0;
+
+    $orderDetails = $order->orderDetails;
+
+    foreach ($orderDetails as $orderDetail) {
+        $subTotal += $orderDetail->price * $orderDetail->quantity * ($orderDetail->tax_rate + 100) / 100;
+    }
+
+    $total = floor($subTotal) + $order->status;
+
     return $total;
   }
 }

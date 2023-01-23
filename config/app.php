@@ -212,4 +212,6 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'tax_rate' => 8,
+
 ];
