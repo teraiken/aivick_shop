@@ -45,14 +45,14 @@ class OrderController extends Controller
 
             if ($product->stock == 0) {
                 session()->forget('cart.' . $product->id);
-                session()->push('errorMessages', $product->name . __('order.out_of_stock'));
+                session()->push('errorMessages', __('order.out_of_stock', ['productname' => $product->name]));
             } elseif ($product->stock < $cartProduct['quantity']) {
                 session()->put('cart.' . $product->id . '.quantity', $product->stock);
-                session()->push('errorMessages', $product->name . __('order.stock_short'));
+                session()->push('errorMessages', __('order.stock_short', ['productname' => $product->name]));
             }
         }
 
-        if ($request->address == 1) {
+        if ($request->address == 'registeredAddress') {
             $address = Address::find($request->address_id);
 
             $addAddress = [
@@ -66,7 +66,7 @@ class OrderController extends Controller
             ];
         }
 
-        if ($request->address == 2) {
+        if ($request->address == 'newAddress') {
             $addAddress = [
                 'address' => $request->address,
                 'name' => $request->name,
@@ -94,10 +94,10 @@ class OrderController extends Controller
         $order->address1 = session('address')['address1'];
         $order->address2 = session('address')['address2'];
         $order->phone_number = session('address')['phone_number'];
-        $order->status = config('shipping_fee')[session('address')['pref_id']];
+        $order->shipping_fee = config('shipping_fee')[session('address')['pref_id']];
         $order->save();
-        
-        if (session('address')['address'] == 2) {
+
+        if (session('address')['address'] == 'newAddress') {
             Address::create([
                 'user_id' => Auth::id(),
                 'name' => $order->name,
@@ -124,12 +124,12 @@ class OrderController extends Controller
             $product->save();
         }
 
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        Stripe::setApiKey(config('app.stripe_secret_key'));
 
         Charge::create(array(
             'amount' => Calculator::orderSum($order),
             'currency' => 'jpy',
-            'source'=> $request->stripeToken,
+            'source' => $request->stripeToken,
         ));
 
         session()->forget('cart');
