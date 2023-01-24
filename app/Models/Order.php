@@ -19,7 +19,7 @@ class Order extends Model
         'address1',
         'address2',
         'phone_number',
-        'status',
+        'shipping_fee',
     ];
 
     public function user()

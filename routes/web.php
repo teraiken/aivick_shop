@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/update','update')->name('update');
         Route::post('/remove','remove')->name('remove');
         Route::post('/destroy','destroy')->name('destroy');
+    });
+
+    Route::prefix('orders')->controller(OrderController::class)->name('orders.')->group(function() {
+        Route::get('/','index')->name('index');
+        Route::get('/create','create')->name('create');
+        Route::post('/confirm','confirm')->name('confirm');
+        Route::post('/','store')->name('store');
+        Route::get('/{order}','show')->name('show');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

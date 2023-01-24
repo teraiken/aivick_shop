@@ -212,4 +212,8 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'tax_rate' => 8,
+
+    'stripe_secret_key' => env('STRIPE_SECRET_KEY'),
+
 ];
