@@ -1,37 +1,37 @@
-window.onload = display;
+window.onload = switchAddress;
 
-const radios = document.getElementsByName("address");
-for (let i = 0; i < radios.length; i++) {
-    radios[i].addEventListener("click", display);
+const addressRadios = document.getElementsByName("address");
+for (let i = 0; i < addressRadios.length; i++) {
+    addressRadios[i].addEventListener("click", switchAddress);
 }
 
-const address_id = document.getElementById("address_id");
-const selectBox = document.getElementById("selectBox");
+const addressId = document.getElementById("addressId");
+const addressSelectBox = document.getElementById("addressSelectBox");
 
-const form = document.getElementById("form");
-const inputItems = form.getElementsByTagName("input");
+const addressForm = document.getElementById("addressForm");
+const addressInputItems = addressForm.getElementsByTagName("input");
 const pref_id = document.getElementById("pref_id");
 
-function display() {
-    if (radios[0].checked) {
-        address_id.required = true;
-        selectBox.style.display = "";
+function switchAddress() {
+    if (addressRadios[0].checked) {
+        addressId.required = true;
+        addressSelectBox.style.display = "";
 
-        for (let i = 0; i < inputItems.length; i++) {
-            inputItems[i].required = false;
+        for (let i = 0; i < addressInputItems.length; i++) {
+            addressInputItems[i].required = false;
         }
         pref_id.required = false;
-        form.style.display = "none";
+        addressForm.style.display = "none";
     }
 
-    if (radios[1].checked) {
-        address_id.required = false;
-        selectBox.style.display = "none";
+    if (addressRadios[1].checked) {
+        addressId.required = false;
+        addressSelectBox.style.display = "none";
 
-        for (let i = 0; i < inputItems.length; i++) {
-            inputItems[i].required = true;
+        for (let i = 0; i < addressInputItems.length; i++) {
+            addressInputItems[i].required = true;
         }
         pref_id.required = true;
-        form.style.display = "";
+        addressForm.style.display = "";
     }
 }

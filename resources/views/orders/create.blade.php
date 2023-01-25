@@ -19,12 +19,12 @@
                             </div>
                         </div>
 
-                        <div class="p-2 w-full" id="selectBox">
+                        <div class="p-2 w-full" id="addressSelectBox">
                             <div class="relative">
-                                <select id="address_id" name="address_id" required>
+                                <select id="addressId" name="addressId" required>
                                     <option value="">選択してください</option>
                                     @foreach($addresses as $address)
-                                    <option value="{{ $address->id }}" {{ old('address_id')==$address->id ? 'selected' :
+                                    <option value="{{ $address->id }}" {{ old('addressId')==$address->id ? 'selected' :
                                         '' }}>〒{{ substr_replace($address->postal_code, '-', 3, 0) }}<br>
                                         {{ config('pref')[$address->pref_id] }}{{ $address->address1 }}…<br>
                                         {{ $address->name }}</option>
@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap -m-2 pb-2" id="form">
+                    <div class="flex flex-wrap -m-2 pb-2" id="addressForm">
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <x-input-label for="name">宛名</x-input-label>

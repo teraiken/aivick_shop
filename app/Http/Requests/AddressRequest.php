@@ -37,9 +37,8 @@ class AddressRequest extends FormRequest
     protected function prepareForValidation()
     {
         if ($this->address == 'registeredAddress') {
-            $address = Address::find($this->address_id);
+            $address = Address::find($this->addressId);
 
-            $data = [];
             $data['name'] = $address->name;
             $data['postal_code'] = $address->postal_code;
             $data['pref_id'] = $address->pref_id;
