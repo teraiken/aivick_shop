@@ -8,7 +8,9 @@ $orderDetails = $order->orderDetails;
 
 この度はaivick_shopをご利用いただきまして､誠にありがとうございます｡<br>
 注文内容は以下のﾍﾟｰｼﾞからﾒｰﾙｱﾄﾞﾚｽ･ﾊﾟｽﾜｰﾄﾞを入力しご確認ください｡<br>
-<a href="http://localhost/orders/{{ $order->id }}">http://localhost/orders/{{ $order->id }}</a><br>
+<a href="{{ route('orders.show', ['order' => $order->id]) }}">
+    {{ route('orders.show', ['order' => $order->id]) }}
+</a><br>
 <br>
 @foreach ($orderDetails as $key => $orderDetail)
 商品{{ $key+1 }}:{{ $orderDetail->product->name }} (税込¥{{ number_format($orderDetail->price * ($orderDetail->tax_rate +
