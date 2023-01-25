@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-wrap -m-2 pb-2" id="addressForm">
+                    <div class="flex flex-wrap -m-2 pb-2" id="addressForm" style="display: none">
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <x-input-label for="name">宛名</x-input-label>
