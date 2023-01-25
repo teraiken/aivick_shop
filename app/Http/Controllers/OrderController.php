@@ -54,31 +54,15 @@ class OrderController extends Controller
             }
         }
 
-        if ($request->address == 'registeredAddress') {
-            $address = Address::find($request->address_id);
-
-            $addAddress = [
-                'address' => $request->address,
-                'name' => $address->name,
-                'postal_code' => $address->postal_code,
-                'pref_id' => $address->pref_id,
-                'address1' => $address->address1,
-                'address2' => $address->address2,
-                'phone_number' => $address->phone_number,
-            ];
-        }
-
-        if ($request->address == 'newAddress') {
-            $addAddress = [
-                'address' => $request->address,
-                'name' => $request->name,
-                'postal_code' => $request->postal_code,
-                'pref_id' => $request->pref_id,
-                'address1' => $request->address1,
-                'address2' => $request->address2,
-                'phone_number' => $request->phone_number,
-            ];
-        }
+        $addAddress = [
+            'address' => $request->address,
+            'name' => $request->name,
+            'postal_code' => $request->postal_code,
+            'pref_id' => $request->pref_id,
+            'address1' => $request->address1,
+            'address2' => $request->address2,
+            'phone_number' => $request->phone_number,
+        ];
 
         session()->put('address', $addAddress);
 
