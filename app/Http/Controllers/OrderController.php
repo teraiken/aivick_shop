@@ -12,6 +12,8 @@ use Stripe\Stripe;
 use Stripe\Charge;
 use App\Helpers\Calculator;
 use App\Http\Requests\AddressRequest;
+use App\Mail\OrderMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -132,6 +134,8 @@ class OrderController extends Controller
             'source' => $request->stripeToken,
         ));
 
+        Mail::to(Auth::user())->send(new OrderMail($order));
+
         session()->forget('cart');
         session()->forget('address');
 
@@ -144,6 +148,8 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
 
-        return view('orders.show', compact('order'));
+        $orderDetails = $order->orderDetails;
+
+        return view('orders.show', compact('order', 'orderDetails'));
     }
 }
