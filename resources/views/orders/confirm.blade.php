@@ -106,16 +106,22 @@ use App\Helpers\Calculator;
             </tr>
         </table>
 
-        <div class="text-center">
-            <form method="post" action="{{ route('orders.store') }}">
-                @csrf
-                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                    data-key="{{ env('STRIPE_PUBLIC_KEY') }}" data-amount="{{ $sum + $shipping }}"
-                    data-name="Stripe Demo" data-label="注文を確定する" data-description="これはデモ決済です"
-                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png" data-locale="auto"
-                    data-currency="JPY">
-                </script>
-            </form>
+        <div class="flex">
+            <div class="flex mx-auto">
+                <x-primary-button onclick="history.back();">
+                    戻る
+                </x-primary-button>
+
+                <form class="ml-4" method="post" action="{{ route('orders.store') }}">
+                    @csrf
+                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="{{ env('STRIPE_PUBLIC_KEY') }}" data-amount="{{ $sum + $shipping }}"
+                        data-name="Stripe Demo" data-label="注文を確定する" data-description="これはデモ決済です"
+                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png" data-locale="auto"
+                        data-currency="JPY">
+                    </script>
+                </form>
+            </div>
         </div>
         @endif
     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Address;
 
 class AddressRequest extends FormRequest
 {
@@ -31,5 +32,21 @@ class AddressRequest extends FormRequest
             'address2' => ['required', 'string'],
             'phone_number' => ['required', 'string', 'regex:/^0\d{9,10}$/'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        if ($this->address == 'registeredAddress') {
+            $address = Address::find($this->addressId);
+
+            $data['name'] = $address->name;
+            $data['postal_code'] = $address->postal_code;
+            $data['pref_id'] = $address->pref_id;
+            $data['address1'] = $address->address1;
+            $data['address2'] = $address->address2;
+            $data['phone_number'] = $address->phone_number;
+
+            $this->merge($data);
+        }
     }
 }
