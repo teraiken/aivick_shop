@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\OrderDetail;
+use App\Traits\Search;
 
 class Product extends Model
 {
     use HasFactory;
+    use Search;
 
     protected $fillable = [
         'name',
@@ -18,18 +20,6 @@ class Product extends Model
         'stock',
         'status',
     ];
-
-    public function scopeSearch($query, $search)
-    {
-        if ($search !== null) {
-            $converted = mb_convert_kana($search, 's');
-            $searchSplited = preg_split('/[\s]+/', $converted);
-            foreach ($searchSplited as $value) {
-                $query->where('name', 'like', '%' .$value. '%');
-            }
-        }
-        return $query;
-    }
 
     public function orderDetails()
     {
