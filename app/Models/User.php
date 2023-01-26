@@ -8,10 +8,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Address;
 use App\Models\Order;
+use App\Traits\Search;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use Search;
 
     /**
      * The attributes that are mass assignable.
@@ -43,18 +45,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function scopeSearch($query, $search)
-    {
-        if ($search !== null) {
-            $converted = mb_convert_kana($search, 's');
-            $searchSplited = preg_split('/[\s]+/', $converted);
-            foreach ($searchSplited as $value) {
-                $query->where('name', 'like', '%' .$value. '%');
-            }
-        }
-        return $query;
-    }
-    
     public function addresses()
     {
         return $this->hasMany(Address::class);
