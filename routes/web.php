@@ -23,22 +23,19 @@ use App\Http\Controllers\Admin\AdminController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [ProductController::class, 'index'])->name('products.index');
+
+Route::prefix('cart')->controller(CartController::class)->name('cart.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/add', 'add')->name('add');
+    Route::post('/update', 'update')->name('update');
+    Route::post('/remove', 'remove')->name('remove');
+    Route::post('/destroy', 'destroy')->name('destroy');
 });
 
 Route::middleware('auth')->group(function () {
 
     Route::resource('addresses', AddressController::class);
-    Route::resource('products', ProductController::class);
-
-    Route::prefix('cart')->controller(CartController::class)->name('cart.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/add', 'add')->name('add');
-        Route::post('/update', 'update')->name('update');
-        Route::post('/remove', 'remove')->name('remove');
-        Route::post('/destroy', 'destroy')->name('destroy');
-    });
 
     Route::prefix('orders')->controller(OrderController::class)->name('orders.')->group(function () {
         Route::get('/', 'index')->name('index');

@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="background-color: #ffb600">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -9,22 +9,6 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
-                        商品一覧
-                    </x-nav-link>
-                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
-                        カート
-                        @if (!empty(session('cart')))
-                        <div
-                            class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0">
-                            {{count(session('cart')) }}
-                        </div>
-                        @endif
-                    </x-nav-link>
-                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -32,8 +16,14 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                            <div>
+                                @if (Auth::check())
+                                {{ Auth::user()->name }}
+                                @else
+                                ゲスト
+                                @endif
+                            </div>
 
                             <div class="ml-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -47,6 +37,7 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        @if (Auth::check())
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
@@ -66,8 +57,26 @@
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
+                        @else
+                        <x-dropdown-link :href="route('login')">
+                            ログイン
+                        </x-dropdown-link>
+                        @endif
                     </x-slot>
                 </x-dropdown>
+
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('cart.index') }}">
+                        <img src="{{ asset('storage/image/cart.png') }}"
+                            class="block h-9 w-auto fill-current text-gray-800">
+                    </a>
+                    @if (!empty(session('cart')))
+                    <div
+                        class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0">
+                        {{count(session('cart')) }}
+                    </div>
+                    @endif
+                </div>
             </div>
 
             <!-- Hamburger -->
@@ -82,35 +91,38 @@
                             stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
+
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('cart.index') }}">
+                        <img src="{{ asset('storage/image/cart.png') }}"
+                            class="block h-9 w-auto fill-current text-gray-800">
+                    </a>
+                    @if (!empty(session('cart')))
+                    <div
+                        class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0">
+                        {{count(session('cart')) }}
+                    </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
-                商品一覧
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
-                カート
-                @if (!empty(session('cart')))
-                <div
-                    class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white flex-shrink-0">
-                    {{count(session('cart')) }}
-                </div>
-                @endif
-            </x-responsive-nav-link>
-        </div>
-
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
+                @if (Auth::check())
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                @else
+                <div class="font-medium text-base text-gray-800">ゲスト</div>
+                @endif
             </div>
 
             <div class="mt-3 space-y-1">
+                @if (Auth::check())
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
@@ -130,6 +142,11 @@
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
+                @else
+                <x-responsive-nav-link :href="route('login')">
+                    ログイン
+                </x-responsive-nav-link>
+                @endif
             </div>
         </div>
     </div>
