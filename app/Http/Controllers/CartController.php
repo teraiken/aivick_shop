@@ -15,6 +15,12 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
+        if (array_key_exists($request->id, session('cart', []))) {
+            $request->quantity += session('cart')[$request->id]['quantity'];
+            $this->update($request);
+            return to_route('products.index');
+        }
+
         $product = Product::whereStatus(ProductStatus::Active->value)->find($request->id);
 
         if (is_null($product)) {
@@ -23,20 +29,15 @@ class CartController extends Controller
         }
 
         $addProduct = [
-            'id' => $request->id, 
+            'id' => $request->id,
             'name' => $product->name,
             'image' => $product->image,
             'price' => $product->price,
             'stock' => $product->stock,
-            'quantity' => $request->quantity, 
+            'quantity' => $request->quantity,
         ];
 
-        if (!array_key_exists($addProduct['id'], session('cart', []))) {
-            $this->checkStockForAdd($addProduct);
-        } else {
-            $AddQuantity = session('cart')[$addProduct['id']]['quantity'] + $addProduct['quantity'];
-            $this->checkStockForUpdate($addProduct, $AddQuantity);
-        }
+        $this->checkStockForAdd($addProduct);
 
         return to_route('products.index');
     }
@@ -51,32 +52,24 @@ class CartController extends Controller
         }
 
         $updateProduct = [
-            'id' => $request->id, 
-            'stock' => $product->stock, 
+            'id' => $request->id,
+            'stock' => $product->stock,
             'quantity' => $request->quantity,
         ];
 
-        $this->checkStockForUpdate($updateProduct, $updateProduct['quantity']);
+        $this->checkStockForUpdate($updateProduct);
 
         return to_route('cart.index');
     }
 
     public function remove(Request $request)
     {
-        $removeProduct = [
-            'id' => $request->id, 
-        ];
-
-        session()->forget('cart.' . $removeProduct['id']);
-
-        if (empty(session('cart'))) {
-            session()->forget('cart');
-        }
+        session()->forget('cart.' . $request->id);
 
         return to_route('cart.index');
     }
 
-    public function destroy() 
+    public function destroy()
     {
         session()->forget('cart');
 
@@ -85,22 +78,29 @@ class CartController extends Controller
 
     private function checkStockForAdd(array $product)
     {
-        if ($product['stock'] >= $product['quantity']) {
+        if ($product['stock'] === 0) {
+            session()->flash('errorMessage', __('cart.out_of_stock'));
+        } elseif ($product['stock'] < $product['quantity']) {
+            $product['quantity'] = $product['stock'];
+            session()->put('cart.' . $product['id'], $product);
+            session()->flash('errorMessage', __('cart.stock_short'));
+        } else {
             session()->put('cart.' . $product['id'], $product);
             session()->flash('successMessage', __('cart.add_success'));
-        } else {
-            session()->flash('errorMessage', __('cart.add_failed'));
         }
     }
 
-    private function checkStockForUpdate(array $product, int $quantity)
+    private function checkStockForUpdate(array $product)
     {
-        if ($product['stock'] >= $quantity) {
-            session()->put('cart.' . $product['id'] . '.quantity', $quantity);
-            session()->flash('successMessage', __('cart.add_success'));
-        } else {
+        if ($product['stock'] === 0) {
+            session()->forget('cart.' . $product['id']);
+            session()->flash('errorMessage', __('cart.out_of_stock'));
+        } elseif ($product['stock'] < $product['quantity']) {
             session()->put('cart.' . $product['id'] . '.quantity', $product['stock']);
-            session()->flash('errorMessage', __('cart.add_failed'));
+            session()->flash('errorMessage', __('cart.stock_short'));
+        } else {
+            session()->put('cart.' . $product['id'] . '.quantity', $product['quantity']);
+            session()->flash('successMessage', __('cart.add_success'));
         }
     }
 }
