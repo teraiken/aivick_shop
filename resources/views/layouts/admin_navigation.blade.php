@@ -22,6 +22,9 @@
                     <x-nav-link :href="route('admin.orders.index')" :active="request()->routeIs('admin.orders.index')">
                         注文一覧
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.admins.index')" :active="request()->routeIs('admin.admins.index')">
+                        管理者一覧
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -45,10 +48,6 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('admin.register')">
-                            管理者登録
-                        </x-dropdown-link>
-
                         <x-dropdown-link :href="route('admin.profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
@@ -96,6 +95,10 @@
                 :active="request()->routeIs('admin.orders.index')">
                 注文一覧
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.admins.index')"
+                :active="request()->routeIs('admin.admins.index')">
+                管理者一覧
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -106,10 +109,6 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('admin.register')">
-                    管理者登録
-                </x-responsive-nav-link>
-
                 <x-responsive-nav-link :href="route('admin.profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
