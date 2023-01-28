@@ -61,6 +61,9 @@
                         <x-dropdown-link :href="route('login')">
                             ログイン
                         </x-dropdown-link>
+                        <x-dropdown-link :href="route('register')">
+                            新規登録
+                        </x-dropdown-link>
                         @endif
                     </x-slot>
                 </x-dropdown>
@@ -145,6 +148,9 @@
                 @else
                 <x-responsive-nav-link :href="route('login')">
                     ログイン
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('register')">
+                    新規登録
                 </x-responsive-nav-link>
                 @endif
             </div>
