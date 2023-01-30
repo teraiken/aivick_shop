@@ -38,20 +38,22 @@ use App\Helpers\Calculator;
                 @foreach(session('cart') as $product)
                 <tr>
                     <x-td>
-                        <section class="text-gray-600 body-font overflow-hidden">
-                            <div class="container mx-auto">
-                                <div class="-my-8 divide-y-2 divide-gray-100">
-                                    <div class="py-8 md:flex">
-                                        <div class="w-16 flex-shrink-0 flex flex-col">
-                                            <img src="{{ asset('storage/image/' . $product['image']) }}">
-                                        </div>
-                                        <div class="md:flex-grow md:ml-2 leading-10">
-                                            {{ $product['name'] }}
+                        <a href="{{ route('products.show', ['product' => $product['id']]) }}">
+                            <section class="text-gray-600 body-font overflow-hidden">
+                                <div class="container mx-auto">
+                                    <div class="-my-8 divide-y-2 divide-gray-100">
+                                        <div class="py-8 md:flex">
+                                            <div class="w-16 flex-shrink-0 flex flex-col">
+                                                <img src="{{ asset('storage/image/' . $product['image']) }}">
+                                            </div>
+                                            <div class="md:flex-grow md:ml-2 leading-10">
+                                                {{ $product['name'] }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                        </a>
                     </x-td>
                     <x-td>¥{{ number_format($price = Tax::add($product['price'])) }}</x-td>
                     <x-td>{{ $product['quantity'] }}</x-td>
