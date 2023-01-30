@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed w-full z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="background-color: #ffb600">
         <div class="flex justify-between h-16">
@@ -60,6 +60,9 @@
                         @else
                         <x-dropdown-link :href="route('login')">
                             ログイン
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('register')">
+                            新規登録
                         </x-dropdown-link>
                         @endif
                     </x-slot>
@@ -145,6 +148,9 @@
                 @else
                 <x-responsive-nav-link :href="route('login')">
                     ログイン
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('register')">
+                    新規登録
                 </x-responsive-nav-link>
                 @endif
             </div>
