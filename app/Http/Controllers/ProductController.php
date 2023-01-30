@@ -25,6 +25,24 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'search', 'sortType'));
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $product = Product::whereStatus(ProductStatus::Active->value)->find($id);
+
+        if (is_null($product)) {
+            session()->flash('errorMessage', __('cart.invalid_operation'));
+            return to_route('products.index');
+        }
+
+        return view('products.show', compact('product'));
+    }
+
     private function searchKeywordAndSortBy(?String $search, ?String $sortType): Collection
     {
         $query = Product::search($search);

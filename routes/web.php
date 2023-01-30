@@ -23,7 +23,10 @@ use App\Http\Controllers\Admin\AdminController;
 |
 */
 
-Route::get('/', [ProductController::class, 'index'])->name('products.index');
+Route::controller(ProductController::class)->name('products.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/products/{product}', 'show')->name('show');
+});
 
 Route::prefix('cart')->controller(CartController::class)->name('cart.')->group(function () {
     Route::get('/', 'index')->name('index');
