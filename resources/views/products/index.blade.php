@@ -19,10 +19,10 @@
 
             <form class="mb-8 text-right" method="get" action="{{ route('products.index') }}">
                 <x-search-form search="{{ $search }}">
-                    <select class="ml-4" name="sort">
-                        <option value="popular" {{ $sort=="popular" ? 'selected' : '' }}>人気順</option>
-                        <option value="price" {{ $sort=="price" ? 'selected' : '' }}>価格順</option>
-                        <option value="new" {{ $sort=="new" ? 'selected' : '' }}>新着順</option>
+                    <select class="ml-4" name="sortType">
+                        <option value="popular" {{ $sortType==="popular" ? 'selected' : '' }}>人気順</option>
+                        <option value="price" {{ $sortType==="price" ? 'selected' : '' }}>価格順</option>
+                        <option value="new" {{ $sortType==="new" ? 'selected' : '' }}>新着順</option>
                     </select>
                 </x-search-form>
             </form>
