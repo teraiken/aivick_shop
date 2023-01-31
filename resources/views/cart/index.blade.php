@@ -85,7 +85,7 @@ use App\Helpers\Calculator;
                         <form method="post" action="{{ route('cart.remove')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{ $product['id'] }}">
-                            <x-small-danger-button>削除</x-small-danger-button>
+                            <x-danger-button>削除</x-danger-button>
                         </form>
                     </x-td>
                 </tr>

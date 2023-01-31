@@ -62,9 +62,9 @@
                         </div>
 
                         <div class="p-2 w-full text-center">
-                            <x-small-danger-button>
+                            <x-danger-button>
                                 新規登録する
-                            </x-small-danger-button>
+                            </x-danger-button>
                         </div>
                     </div>
                 </div>
