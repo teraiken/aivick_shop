@@ -22,7 +22,7 @@ class OrderController extends Controller
 
         $orders = $query->orderBy('id', 'desc')->paginate($maxRecords);
 
-        return view('admin.orders.index', compact('orders'));
+        return view('admin.orders.index', compact('orders', 'search'));
     }
 
     /**

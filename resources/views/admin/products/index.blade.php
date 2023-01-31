@@ -10,7 +10,7 @@
     <section class="text-gray-600 body-font overflow-hidden">
         <div class="container px-5 mx-auto">
             <form class="mb-8 text-right" method="get" action="{{ route('admin.products.index') }}">
-                <x-search-form></x-search-form>
+                <x-search-form search="{{ $search }}"></x-search-form>
             </form>
 
             <div class="-my-8 divide-y-2 divide-gray-100">

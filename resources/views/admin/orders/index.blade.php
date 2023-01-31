@@ -12,7 +12,7 @@ use App\Helpers\Calculator;
 
     <div class="lg:w-3/4 w-full mx-auto overflow-auto">
         <form class="mb-8 text-right" method="get" action="{{ route('admin.orders.index') }}">
-            <x-search-form></x-search-form>
+            <x-search-form search="{{ $search }}"></x-search-form>
         </form>
 
         <table class="table-auto w-full text-left whitespace-no-wrap">
