@@ -130,7 +130,7 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::find($id);
+        $order = Order::whereUserId(Auth::id())->find($id);
 
         $orderDetails = $order->orderDetails;
 
