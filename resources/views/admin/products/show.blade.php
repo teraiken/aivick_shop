@@ -56,9 +56,9 @@
                             </x-primary-button>
                         </form>
 
-                        <x-small-danger-button class="ml-4" x-data=""
+                        <x-danger-button class="ml-4" x-data=""
                             x-on:click.prevent="$dispatch('open-modal', 'confirm-product-deletion')">削除する
-                        </x-small-danger-button>
+                        </x-danger-button>
                     </div>
 
                     <x-modal name="confirm-product-deletion">

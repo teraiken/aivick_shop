@@ -39,9 +39,9 @@
                             @csrf
                             @method('delete')
 
-                            <x-small-danger-button>
+                            <x-danger-button>
                                 削除
-                            </x-small-danger-button>
+                            </x-danger-button>
                         </form>
                     </x-td>
                 </tr>
