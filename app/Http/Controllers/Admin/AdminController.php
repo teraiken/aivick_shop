@@ -22,7 +22,7 @@ class AdminController extends Controller
 
         $admins = $query->orderBy('id', 'desc')->paginate($maxRecords);
 
-        return view('admin.admins.index', compact('admins'));
+        return view('admin.admins.index', compact('admins', 'search'));
     }
 
     /**

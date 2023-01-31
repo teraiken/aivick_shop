@@ -22,7 +22,7 @@ class UserController extends Controller
 
         $users = $query->paginate($maxRecords);
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users', 'search'));
     }
 
     /**

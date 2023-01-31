@@ -5,7 +5,7 @@
 
     <div class="lg:w-2/3 w-full mx-auto overflow-auto">
         <form class="mb-8 text-right" method="get" action="{{ route('admin.users.index') }}">
-            <x-search-form></x-search-form>
+            <x-search-form search="{{ $search }}"></x-search-form>
         </form>
 
         <table class="table-auto w-full text-left whitespace-no-wrap">

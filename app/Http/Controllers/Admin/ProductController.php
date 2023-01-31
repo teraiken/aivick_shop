@@ -27,7 +27,7 @@ class ProductController extends Controller
 
         $products = $query->orderBy('id', 'desc')->paginate($maxRecords);
 
-        return view('admin.products.index', compact('products'));
+        return view('admin.products.index', compact('products', 'search'));
     }
 
     /**
