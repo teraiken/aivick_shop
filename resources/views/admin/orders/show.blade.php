@@ -36,20 +36,22 @@ use App\Helpers\Calculator;
                 @foreach($orderDetails as $orderDetail)
                 <tr>
                     <x-td>
-                        <section class="text-gray-600 body-font overflow-hidden">
-                            <div class="container mx-auto">
-                                <div class="-my-8 divide-y-2 divide-gray-100">
-                                    <div class="py-8 md:flex">
-                                        <div class="w-16 flex-shrink-0 flex flex-col">
-                                            <img src="{{ asset('storage/image/' . $orderDetail->product->image) }}">
-                                        </div>
-                                        <div class="md:flex-grow md:ml-2 leading-10">
-                                            {{ $orderDetail->product->name }}
+                        <a href="{{ route('admin.products.show', ['product' => $orderDetail->product->id]) }}">
+                            <section class="text-gray-600 body-font overflow-hidden">
+                                <div class="container mx-auto">
+                                    <div class="-my-8 divide-y-2 divide-gray-100">
+                                        <div class="py-8 md:flex">
+                                            <div class="w-16 flex-shrink-0 flex flex-col">
+                                                <img src="{{ asset('storage/image/' . $orderDetail->product->image) }}">
+                                            </div>
+                                            <div class="md:flex-grow md:ml-2 leading-10">
+                                                {{ $orderDetail->product->name }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                        </a>
                     </x-td>
                     <x-td>¥{{ number_format($price = $orderDetail->price * ($orderDetail->tax_rate + 100) / 100) }}
                     </x-td>
