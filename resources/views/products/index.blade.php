@@ -56,7 +56,6 @@
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $product->id }}">
                                 <select name="quantity" required>
-                                    <option value="">個数</option>
                                     @for($quantity = 1; $quantity <= $availableQuantity; $quantity++): <option
                                         value="{{ $quantity }}">{{ $quantity }}</option>
                                         @endfor;
