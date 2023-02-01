@@ -7,7 +7,7 @@ $orderDetails = $order->orderDetails;
 ?>
 
 この度はaivick_shopをご利用いただきまして､誠にありがとうございます｡<br>
-注文内容は以下のﾍﾟｰｼﾞからﾒｰﾙｱﾄﾞﾚｽ･ﾊﾟｽﾜｰﾄﾞを入力しご確認ください｡<br>
+注文内容は以下のページからメールアドレス･パスワードを入力しご確認ください｡<br>
 <a href="{{ route('orders.show', ['order' => $order->id]) }}">
     {{ route('orders.show', ['order' => $order->id]) }}
 </a><br>
