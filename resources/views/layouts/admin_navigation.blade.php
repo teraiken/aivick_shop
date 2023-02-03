@@ -25,6 +25,10 @@
                     <x-nav-link :href="route('admin.admins.index')" :active="request()->routeIs('admin.admins.index')">
                         管理者一覧
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.shippingFees.index')"
+                        :active="request()->routeIs('admin.shippingFees.index')">
+                        送料一覧
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -98,6 +102,10 @@
             <x-responsive-nav-link :href="route('admin.admins.index')"
                 :active="request()->routeIs('admin.admins.index')">
                 管理者一覧
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.shippingFees.index')"
+                :active="request()->routeIs('admin.shippingFees.index')">
+                送料一覧
             </x-responsive-nav-link>
         </div>
 
