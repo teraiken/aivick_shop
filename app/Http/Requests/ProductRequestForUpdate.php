@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Enums\ProductStatus;
 use Illuminate\Validation\Rules\Enum;
 
-class ProductRequest extends FormRequest
+class ProductRequestForUpdate extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'image' => ['required', 'image'],
+            'image' => ['sometimes', 'image'],
             'introduction' => ['required', 'string'],
             'price' => ['required', 'integer', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],

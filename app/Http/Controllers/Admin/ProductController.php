@@ -8,7 +8,8 @@ use App\Models\Product;
 use Carbon\Carbon;
 use App\Enums\ProductStatus;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductRequestForStore;
+use App\Http\Requests\ProductRequestForUpdate;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -48,9 +49,9 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductRequest $request)
+    public function store(ProductRequestForStore $request)
     {
-        $fileName = Carbon::now()->format("YmdHis") . '_' . $request->file('image')->getClientOriginalName();
+        $fileName = $this->getFileName($request);
 
         $request->file('image')->storeAs('public/image', $fileName);
 
@@ -103,18 +104,18 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductRequest $request, $id)
+    public function update(ProductRequestForUpdate $request, $id)
     {
         $product = Product::find($id);
 
-        Storage::delete('public/image/' . $product->image);
-
-        $fileName = Carbon::now()->format("YmdHis") . '_' . $request->file('image')->getClientOriginalName();
-
-        $request->file('image')->storeAs('public/image', $fileName);
+        if (file_exists($request->file('image'))) {
+            Storage::delete('public/image/' . $product->image);
+            $fileName = $this->getFileName($request);
+            $request->file('image')->storeAs('public/image', $fileName);
+            $product->image = $fileName;
+        }
 
         $product->name = $request->name;
-        $product->image = $fileName;
         $product->introduction = $request->introduction;
         $product->price = $request->price;
         $product->stock = $request->stock;
@@ -141,5 +142,12 @@ class ProductController extends Controller
         });
 
         return to_route('admin.products.index');
+    }
+
+    private function getFileName(Request $request): string
+    {
+        $fileName = Carbon::now()->format("YmdHis") . '_' . $request->file('image')->getClientOriginalName();
+
+        return $fileName;
     }
 }

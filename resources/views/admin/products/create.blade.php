@@ -20,7 +20,8 @@
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <x-input-label>画像</x-input-label><br>
-                                <input type="file" name="image">
+                                <input type="file" id="image" name="image">
+                                <img id="productImage">
                                 <x-input-error :messages="$errors->get('image')" class="mt-2" />
                             </div>
                         </div>
@@ -71,4 +72,7 @@
             </div>
         </form>
     </section>
+    @push('script')
+    @vite(['resources/js/product.js'])
+    @endpush
 </x-admin-layout>
