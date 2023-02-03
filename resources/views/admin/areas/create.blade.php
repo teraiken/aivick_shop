@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
     <x-slot name="header">
         新規作成
     </x-slot>
@@ -36,4 +36,4 @@
             </div>
         </form>
     </section>
-</x-app-layout>
+</x-admin-layout>
