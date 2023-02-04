@@ -120,7 +120,7 @@ use App\Helpers\Calculator;
                         data-key="{{ env('STRIPE_PUBLIC_KEY') }}" data-amount="{{ $sum + $shipping }}"
                         data-name="Stripe Demo" data-label="注文を確定する" data-description="これはデモ決済です"
                         data-image="https://stripe.com/img/documentation/checkout/marketplace.png" data-locale="auto"
-                        data-currency="JPY">
+                        data-currency="JPY" data-email="{{ Auth::user()->email }}">
                     </script>
                 </form>
             </div>
