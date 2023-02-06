@@ -13,6 +13,7 @@ use Stripe\Charge;
 use App\Helpers\Calculator;
 use App\Http\Requests\AddressRequest;
 use App\Mail\OrderMail;
+use App\Models\Area;
 use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
@@ -80,7 +81,7 @@ class OrderController extends Controller
         $order->address1 = session('address')['address1'];
         $order->address2 = session('address')['address2'];
         $order->phone_number = session('address')['phone_number'];
-        $order->shipping_fee = config('shipping_fee')[session('address')['pref_id']];
+        $order->shipping_fee = Area::find(config('area')[session('address')['pref_id']])->currentShippingFee->fee;
         $order->save();
 
         if (session('address')['address'] == 'newAddress') {

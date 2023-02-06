@@ -17,6 +17,11 @@ class ShippingFee extends Model
         'end_date',
     ];
 
+    protected $dates = [
+        'start_date',
+        'end_date',
+    ];
+
     public function area()
     {
         return $this->belongsTo(Area::class);
