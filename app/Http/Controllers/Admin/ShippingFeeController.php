@@ -34,16 +34,12 @@ class ShippingFeeController extends Controller
             return to_route('admin.areas.show', compact('area'));
         }
 
-        $shippingFee = new ShippingFee();
-        $shippingFee->area_id = $area['id'];
-        $shippingFee->fee = $request->fee;
-        $shippingFee->start_date = $request->start_date;
-        if (is_null($request->end_date)) {
-            $shippingFee->end_date = null;
-        } else {
-            $shippingFee->end_date = Carbon::parse($request->end_date)->endOfDay();
-        }
-        $shippingFee->save();
+        ShippingFee::create([
+            'area_id' => $area['id'],
+            'fee' => $request->fee,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+        ]);
 
         return to_route('admin.areas.show', compact('area'));
     }
@@ -116,11 +112,7 @@ class ShippingFeeController extends Controller
 
         $updateShippingFee->fee = $request->fee;
         $updateShippingFee->start_date = $request->start_date;
-        if (is_null($request->end_date)) {
-            $updateShippingFee->end_date = null;
-        } else {
-            $updateShippingFee->end_date = Carbon::parse($request->end_date)->endOfDay();
-        }
+        $updateShippingFee->end_date = $request->end_date;
         $updateShippingFee->save();
 
         return to_route('admin.areas.show', compact('area'));

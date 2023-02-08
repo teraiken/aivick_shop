@@ -7,7 +7,6 @@ use App\Http\Requests\AreaRequestForStore;
 use App\Http\Requests\AreaRequestForUpdate;
 use App\Models\Area;
 use App\Models\ShippingFee;
-use Carbon\Carbon;
 
 class AreaController extends Controller
 {
@@ -52,7 +51,7 @@ class AreaController extends Controller
             'area_id' => $area->id,
             'fee' => $request->fee,
             'start_date' => $request->start_date,
-            'end_date' => Carbon::parse($request->end_date)->endOfDay(),
+            'end_date' => $request->end_date,
         ]);
 
         return to_route('admin.areas.index');
