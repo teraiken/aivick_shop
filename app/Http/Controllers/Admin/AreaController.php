@@ -69,8 +69,6 @@ class AreaController extends Controller
 
         $shippingFees = $area->shippingFees;
 
-        session()->put('area', $area);
-
         return view('admin.areas.show', compact('area', 'shippingFees'));
     }
 

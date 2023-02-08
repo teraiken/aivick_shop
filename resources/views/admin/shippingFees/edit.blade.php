@@ -12,6 +12,13 @@
                     <div class="flex flex-wrap -m-2">
                         <div class="p-2 w-full">
                             <div class="relative">
+                                <x-input-label for="name">エリア名</x-input-label>
+                                <x-text-show>{{ $area->name }}</x-text-show>
+                            </div>
+                        </div>
+
+                        <div class="p-2 w-full">
+                            <div class="relative">
                                 <x-input-label for="fee">送料</x-input-label>
                                 <x-text-input id="fee" type="text" name="fee" :value="$shippingFee->fee" required />
                                 <x-input-error :messages="$errors->get('fee')" class="mt-2" />

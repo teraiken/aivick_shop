@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShippingFeeRequest;
+use App\Models\Area;
 use App\Models\ShippingFee;
 use Carbon\Carbon;
 
@@ -14,9 +15,11 @@ class ShippingFeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('admin.shippingFees.create');
+        $area = Area::find($id);
+
+        return view('admin.shippingFees.create', compact('area'));
     }
 
     /**
@@ -25,9 +28,9 @@ class ShippingFeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ShippingFeeRequest $request)
+    public function store(ShippingFeeRequest $request, $id)
     {
-        $area = session('area');
+        $area = Area::find($id);
 
         if ($this->checkForOverlappingPeriodsSubstituteStartDate($request)) {
             session()->flash('errorMessage', __('shippingFee.overlapping_periods'));
@@ -35,7 +38,7 @@ class ShippingFeeController extends Controller
         }
 
         ShippingFee::create([
-            'area_id' => $area['id'],
+            'area_id' => $area->id,
             'fee' => $request->fee,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -54,7 +57,9 @@ class ShippingFeeController extends Controller
     {
         $shippingFee = ShippingFee::find($id);
 
-        return view('admin.shippingFees.edit', compact('shippingFee'));
+        $area = $shippingFee->area;
+
+        return view('admin.shippingFees.edit', compact('area', 'shippingFee'));
     }
 
     /**

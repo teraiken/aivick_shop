@@ -45,7 +45,7 @@
     <div class="lg:w-1/2 md:w-2/3 w-full mx-auto overflow-auto">
         @if (is_null($area->latestShippingFee) || !is_null($area->latestShippingFee->end_date))
         <div class="text-right">
-            <a href="{{ route('admin.shippingFees.create') }}" class="text-blue-500">新規登録</a>
+            <a href="{{ route('admin.shippingFees.create', ['area' => $area->id]) }}" class="text-blue-500">新規登録</a>
         </div>
         @endif
 
