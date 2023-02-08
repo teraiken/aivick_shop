@@ -23,16 +23,20 @@
                 @foreach ($areas as $area)
                 <tr>
                     <x-td>{{ $area->name }}</x-td>
+                    @if (is_null($area->currentShippingFee))
+                    <x-td colspan="3">{{ __('shippingFee.current_none') }}</x-td>
+                    @else
                     <x-td>¥{{ number_format($area->currentShippingFee->fee) }}</x-td>
                     <x-td>{{ $area->currentShippingFee->start_date->format('Y/m/d') }}</x-td>
                     <x-td>
                         @php
                         $end_date = $area->currentShippingFee->end_date;
                         @endphp
-                        @if (!is_Null($end_date))
+                        @if (!is_null($end_date))
                         {{ $end_date->format('Y/m/d') }}
                         @endif
                     </x-td>
+                    @endif
                     <x-td>
                         <x-primary-button
                             onclick="location.href='{{ route('admin.areas.show', ['area' => $area->id]) }}'">

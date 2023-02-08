@@ -10,29 +10,29 @@
             <div class="container px-5 mx-auto">
                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                     <div class="flex flex-wrap -m-2">
+                        <div class="p-2 w-full">
+                            <div class="relative">
+                                <x-input-label for="fee">送料</x-input-label>
+                                <x-text-input id="fee" type="text" name="fee" :value="$shippingFee->fee" required />
+                                <x-input-error :messages="$errors->get('fee')" class="mt-2" />
+                            </div>
+                        </div>
+
                         <div class="p-2 w-1/2">
                             <div class="relative">
                                 <x-input-label for="start_date">適用開始日</x-input-label>
-                                <input id="start_date" type="hidden" name="start_date"
-                                    value="{{ $shippingFee->start_date }}">
-                                <x-text-show>{{ $shippingFee->start_date }}</x-text-show>
+                                <x-text-input id="start_date" type="date" name="start_date"
+                                    :value="$shippingFee->start_date->format('Y-m-d')" required />
+                                <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
                             </div>
                         </div>
 
                         <div class="p-2 w-1/2">
                             <div class="relative">
                                 <x-input-label for="end_date">適用終了日</x-input-label>
-                                <x-text-input id="end_date" type="date" name="end_date" :value="old('end_date')"
-                                    required />
+                                <x-text-input id="end_date" type="date" name="end_date"
+                                    :value="$shippingFee->end_date ? $shippingFee->end_date->format('Y-m-d') : ''" />
                                 <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
-                            </div>
-                        </div>
-
-                        <div class="p-2 w-full">
-                            <div class="relative">
-                                <x-input-label for="fee">新たな送料</x-input-label>
-                                <x-text-input id="fee" type="text" name="fee" :value="old('fee')" required />
-                                <x-input-error :messages="$errors->get('fee')" class="mt-2" />
                             </div>
                         </div>
 

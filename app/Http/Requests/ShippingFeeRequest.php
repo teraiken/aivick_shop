@@ -24,9 +24,9 @@ class ShippingFeeRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_date' => ['required', 'date'],
-            'end_date' => ['required', 'date', 'after_or_equal:start_date'],
             'fee' => ['required', 'integer', 'min:0'],
+            'start_date' => ['required', 'date', 'after_or_equal:today'],
+            'end_date' => ['sometimes', 'nullable', 'date', 'after_or_equal:start_date'],
         ];
     }
 }

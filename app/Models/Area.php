@@ -24,6 +24,13 @@ class Area extends Model
 
     public function currentShippingFee()
     {
-        return $this->hasOne(ShippingFee::class)->where('start_date', '<', Carbon::now());
+        return $this->hasOne(ShippingFee::class)->where('start_date', '<=', Carbon::now())->where(function ($query) {
+            $query->where('end_date', '>=', Carbon::now())->orWhereNull('end_date');
+        });
+    }
+
+    public function latestShippingFee()
+    {
+        return $this->hasOne(ShippingFee::class)->latestOfMany();
     }
 }

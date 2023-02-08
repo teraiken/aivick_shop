@@ -27,6 +27,7 @@ class AreaRequestForStore extends FormRequest
             'name' => ['required', 'string', 'unique:areas'],
             'fee' => ['required', 'integer', 'min:0'],
             'start_date' => ['required', 'date', 'after_or_equal:today'],
+            'end_date' => ['sometimes', 'nullable', 'date', 'after_or_equal:start_date'],
         ];
     }
 }

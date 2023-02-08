@@ -1,5 +1,8 @@
 <?php
 return [
+
+    // keyはpref_idに、valueはareaテーブルのPKに紐づいています。
+
     '1' => '2',
     '2' => '3',
     '3' => '3',

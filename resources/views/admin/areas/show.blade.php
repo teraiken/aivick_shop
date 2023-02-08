@@ -4,6 +4,12 @@
     </x-slot>
 
     <section class="text-gray-600 body-font relative mb-6">
+        @if (session('errorMessage'))
+        <x-error-message class="mb-8">
+            {{ session('errorMessage') }}
+        </x-error-message>
+        @endif
+
         <form method="POST" action="{{ route('admin.areas.update', ['area' => $area->id]) }}">
             @csrf
             @method('patch')
@@ -37,12 +43,19 @@
     </section>
 
     <div class="lg:w-1/2 md:w-2/3 w-full mx-auto overflow-auto">
+        @if (is_null($area->latestShippingFee) || !is_null($area->latestShippingFee->end_date))
+        <div class="text-right">
+            <a href="{{ route('admin.shippingFees.create') }}" class="text-blue-500">新規登録</a>
+        </div>
+        @endif
+
         <table class="table-auto w-full text-left whitespace-no-wrap">
             <thead>
                 <tr>
                     <x-th>送料</x-th>
                     <x-th>適用開始日</x-th>
                     <x-th>適用終了日</x-th>
+                    <x-th></x-th>
                 </tr>
             </thead>
 
@@ -55,14 +68,24 @@
                         @php
                         $end_date = $shippingFee->end_date;
                         @endphp
-                        @if (!is_Null($end_date))
+                        @if (!is_null($end_date))
                         {{ $end_date->format('Y/m/d') }}
-                        @else
+                        @endif
+                    </x-td>
+                    <x-td class="flex">
                         <form method="get"
                             action="{{ route('admin.shippingFees.edit', ['shippingFee' => $shippingFee->id]) }}">
                             <x-primary-button>編集</x-primary-button>
                         </form>
-                        @endif
+
+                        <form class="ml-2" method="post"
+                            action="{{ route('admin.shippingFees.destroy', ['shippingFee' => $shippingFee->id]) }}"
+                            onsubmit="return confirm('本当に削除しますか？')">
+                            @csrf
+                            @method('delete')
+
+                            <x-danger-button>削除</x-danger-button>
+                        </form>
                     </x-td>
                 </tr>
                 @endforeach
