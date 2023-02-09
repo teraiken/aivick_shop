@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Carbon\Carbon;
-use App\Enums\ProductStatus;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequestForStore;
 use App\Http\Requests\ProductRequestForUpdate;
@@ -38,9 +37,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $productStatuses = ProductStatus::cases();
-
-        return view('admin.products.create', compact('productStatuses'));
+        return view('admin.products.create');
     }
 
     /**
@@ -61,7 +58,8 @@ class ProductController extends Controller
             'introduction' => $request->introduction,
             'price' => $request->price,
             'stock' => $request->stock,
-            'status' => $request->status,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
         ]);
 
         return to_route('admin.products.index');
@@ -77,9 +75,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        $productStatus = ProductStatus::from($product->status);
-
-        return view('admin.products.show', compact('product', 'productStatus'));
+        return view('admin.products.show', compact('product'));
     }
 
     /**
@@ -92,9 +88,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        $productStatuses = ProductStatus::cases();
-
-        return view('admin.products.edit', compact('product', 'productStatuses'));
+        return view('admin.products.edit', compact('product'));
     }
 
     /**
@@ -106,21 +100,24 @@ class ProductController extends Controller
      */
     public function update(ProductRequestForUpdate $request, $id)
     {
-        $product = Product::find($id);
+        DB::transaction(function () use ($request, $id) {
+            $product = Product::find($id);
 
-        if (file_exists($request->file('image'))) {
-            Storage::delete('public/image/' . $product->image);
-            $fileName = $this->getFileName($request);
-            $request->file('image')->storeAs('public/image', $fileName);
-            $product->image = $fileName;
-        }
+            if (file_exists($request->file('image'))) {
+                Storage::delete('public/image/' . $product->image);
+                $fileName = $this->getFileName($request);
+                $request->file('image')->storeAs('public/image', $fileName);
+                $product->image = $fileName;
+            }
 
-        $product->name = $request->name;
-        $product->introduction = $request->introduction;
-        $product->price = $request->price;
-        $product->stock = $request->stock;
-        $product->status = $request->status;
-        $product->save();
+            $product->name = $request->name;
+            $product->introduction = $request->introduction;
+            $product->price = $request->price;
+            $product->stock = $request->stock;
+            $product->start_date = $request->start_date;
+            $product->end_date = $request->end_date;
+            $product->save();
+        });
 
         return to_route('admin.products.index');
     }
@@ -133,13 +130,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        DB::transaction(function () use ($id) {
-            $product = Product::find($id);
+        $product = Product::find($id);
 
-            $product->delete();
-
-            Storage::delete('public/image/' . $product->image);
-        });
+        $product->delete();
 
         return to_route('admin.products.index');
     }

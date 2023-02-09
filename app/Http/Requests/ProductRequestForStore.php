@@ -3,8 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enums\ProductStatus;
-use Illuminate\Validation\Rules\Enum;
 
 class ProductRequestForStore extends FormRequest
 {
@@ -31,7 +29,9 @@ class ProductRequestForStore extends FormRequest
             'introduction' => ['required', 'string'],
             'price' => ['required', 'integer', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
-            'status' => ['required', new Enum(ProductStatus::class)],
+            'start_date' => ['required', 'date', 'after_or_equal:today'],
+            'end_date' => ['sometimes', 'nullable', 'date', 'after_or_equal:start_date'],
+
         ];
     }
 }

@@ -14,7 +14,7 @@
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <x-input-label for="name">商品名</x-input-label>
-                                <x-text-input type="text" id="name" name="name" value="{{ $product->name }}" />
+                                <x-text-input type="text" id="name" name="name" value="{{ $product->name }}" required />
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <x-input-label for="introduction">説明文</x-input-label>
-                                <x-textarea id="introduction" name="introduction">{{ $product->introduction }}
+                                <x-textarea id="introduction" name="introduction" required>{{ $product->introduction }}
                                 </x-textarea>
                                 <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
                             </div>
@@ -40,7 +40,8 @@
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <x-input-label for="price">税抜き価格</x-input-label>
-                                <x-text-input type="number" id="price" name="price" value="{{ $product->price }}" />
+                                <x-text-input type="text" id="price" name="price" value="{{ $product->price }}"
+                                    required />
                                 <x-input-error :messages="$errors->get('price')" class="mt-2" />
                             </div>
                         </div>
@@ -48,20 +49,27 @@
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <x-input-label for="stock">在庫数</x-input-label>
-                                <x-text-input type="number" id="stock" name="stock" value="{{ $product->stock }}" />
+                                <x-text-input type="number" id="stock" name="stock" value="{{ $product->stock }}"
+                                    required />
                                 <x-input-error :messages="$errors->get('stock')" class="mt-2" />
                             </div>
                         </div>
 
-                        <div class="p-2 w-full">
+                        <div class="p-2 w-1/2">
                             <div class="relative">
-                                <x-input-label>ステータス</x-input-label><br>
-                                @foreach($productStatuses as $productStatus)
-                                <input type="radio" name="status" value="{{ $productStatus->value }}"
-                                    @if($product->status === $productStatus->value) checked @endif>{{
-                                $productStatus->label() }}
-                                @endforeach
-                                <x-input-error :messages="$errors->get('status')" class="mt-2" />
+                                <x-input-label for="start_date">販売開始日</x-input-label>
+                                <x-text-input type="date" id="start_date" name="start_date"
+                                    value="{{ $product->start_date->format('Y-m-d') }}" required />
+                                <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+                            </div>
+                        </div>
+
+                        <div class="p-2 w-1/2">
+                            <div class="relative">
+                                <x-input-label for="end_date">販売終了日</x-input-label>
+                                <x-text-input type="date" id="end_date" name="end_date"
+                                    value="{{ $product->end_date ? $product->end_date->format('Y-m-d') : '' }}" />
+                                <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
                             </div>
                         </div>
 
