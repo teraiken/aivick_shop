@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AreaRequest extends FormRequest
+class AreaRequestForStore extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,6 +26,8 @@ class AreaRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'unique:areas'],
             'fee' => ['required', 'integer', 'min:0'],
+            'start_date' => ['required', 'date', 'after_or_equal:today'],
+            'end_date' => ['sometimes', 'nullable', 'date', 'after_or_equal:start_date'],
         ];
     }
 }

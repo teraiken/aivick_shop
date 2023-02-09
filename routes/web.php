@@ -66,7 +66,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('orders', AdminOrderController::class);
         Route::resource('admins', AdminController::class);
         Route::resource('areas', AreaController::class);
-        Route::resource('shippingFees', ShippingFeeController::class);
+
+        Route::prefix('shippingFees')->controller(ShippingFeeController::class)->name('shippingFees.')->group(function () {
+            Route::get('/create/{area}', 'create')->name('create');
+            Route::post('/{area}', 'store')->name('store');
+            Route::get('/{shippingFee}/edit', 'edit')->name('edit');
+            Route::patch('/{shippingFee}', 'update')->name('update');
+            Route::delete('/{shippingFee}', 'destroy')->name('destroy');
+        });
 
         Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');

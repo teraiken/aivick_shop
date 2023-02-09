@@ -2,6 +2,7 @@
 
 use App\Helpers\Tax;
 use App\Helpers\Calculator;
+use App\Models\Area;
 
 ?>
 
@@ -71,7 +72,8 @@ use App\Helpers\Calculator;
                     <td class="px-4 py-3"></td>
                     <x-th>送料</x-th>
                     <x-td></x-td>
-                    <x-td>¥{{ number_format($shipping = config('shipping_fee')[session('address')['pref_id']]) }}</x-td>
+                    <x-td>¥{{ number_format($shipping =
+                        Area::find(config('area')[session('address')['pref_id']])->currentShippingFee->fee) }}</x-td>
                 </tr>
 
                 <tr>
