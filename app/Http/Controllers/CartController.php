@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Enums\ProductStatus;
 
 class CartController extends Controller
 {
@@ -21,7 +20,7 @@ class CartController extends Controller
             return to_route('products.index');
         }
 
-        $product = Product::whereStatus(ProductStatus::Active->value)->find($request->id);
+        $product = Product::onSale()->find($request->id);
 
         if (is_null($product)) {
             session()->flash('errorMessage', __('cart.invalid_operation'));
@@ -44,7 +43,7 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
-        $product = Product::whereStatus(ProductStatus::Active->value)->find($request->id);
+        $product = Product::onSale()->find($request->id);
 
         if (is_null($product)) {
             session()->flash('errorMessage', __('cart.invalid_operation'));
