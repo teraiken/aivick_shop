@@ -138,10 +138,10 @@ return [
 
     'custom' => [
         'start_date' => [
-            'after_or_equal' => '適用開始日には、本日以降の日付を指定してください。',
+            'after_or_equal' => '開始日には、本日以降の日付を指定してください。',
         ],
         'end_date' => [
-            'after_or_equal' => '適用終了日には、適用開始日以降の日付を指定してください。',
+            'after_or_equal' => '終了日には、開始日以降の日付を指定してください。',
         ],
     ],
 
@@ -171,7 +171,7 @@ return [
         'address2' => '住所',
         'phone_number' => '電話番号',
         'fee' => '送料',
-        'start_date' => '適用開始日',
-        'end_date' => '適用終了日',
+        'start_date' => '開始日',
+        'end_date' => '終了日',
     ],
 ];

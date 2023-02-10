@@ -42,10 +42,18 @@
                         </div>
                     </div>
 
-                    <div class="p-2 w-full">
+                    <div class="p-2 w-1/2">
                         <div class="relative">
-                            <x-input-label>ステータス</x-input-label><br>
-                            <x-text-show>{{ $productStatus->label() }}</x-text-show>
+                            <x-input-label for="start_date">販売開始日</x-input-label>
+                            <x-text-show>{{ $product->start_date->format('Y/m/d') }}</x-text-show>
+                        </div>
+                    </div>
+
+                    <div class="p-2 w-1/2">
+                        <div class="relative">
+                            <x-input-label for="end_date">販売終了日</x-input-label>
+                            <x-text-show>{{ $product->end_date ? $product->end_date->format('Y/m/d') : '　' }}
+                            </x-text-show>
                         </div>
                     </div>
 
