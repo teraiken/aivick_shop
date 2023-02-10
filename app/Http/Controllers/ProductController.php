@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Enums\ProductStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +32,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::whereStatus(ProductStatus::Active->value)->find($id);
+        $product = Product::onSale()->find($id);
 
         if (is_null($product)) {
             session()->flash('errorMessage', __('cart.invalid_operation'));
@@ -46,20 +45,20 @@ class ProductController extends Controller
     private function searchKeywordAndSortBy(?String $search, ?String $sortType): Collection
     {
         $query = Product::search($search);
-        $validProducts = $query->whereStatus(ProductStatus::Active->value);
+        $onSaleProducts = $query->onSale();
 
         if ($sortType === "popular" or is_null($sortType)) {
-            $products = $validProducts->withCount([
+            $products = $onSaleProducts->withCount([
                 'orderDetails AS totalQuantity' => function ($query) {
                     $query->select(DB::raw("SUM(quantity)"));
                 }
             ])->orderBy('totalQuantity', 'desc')->get();
         }
         if ($sortType === "new") {
-            $products = $validProducts->orderBy('id', 'desc')->get();
+            $products = $onSaleProducts->orderBy('start_date', 'desc')->get();
         }
         if ($sortType === "price") {
-            $products = $validProducts->orderBy('price', 'asc')->get();
+            $products = $onSaleProducts->orderBy('price', 'asc')->get();
         }
 
         return $products;
