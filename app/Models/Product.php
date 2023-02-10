@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\OrderDetail;
 use App\Traits\Search;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -32,5 +33,12 @@ class Product extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+
+    public function scopeOnSale($query)
+    {
+        return $query->where('start_date', '<=', Carbon::now())->where(function ($query) {
+            $query->where('end_date', '>=', Carbon::now())->orWhereNull('end_date');
+        });
     }
 }
