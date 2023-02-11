@@ -44,6 +44,9 @@
                         <x-dropdown-link :href="route('addresses.index')">
                             配送先一覧
                         </x-dropdown-link>
+                        <x-dropdown-link :href="route('card.show')">
+                            カード情報
+                        </x-dropdown-link>
                         <x-dropdown-link :href="route('orders.index')">
                             注文一覧
                         </x-dropdown-link>
@@ -131,6 +134,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('addresses.index')">
                     配送先一覧
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('card.show')">
+                    カード情報
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('orders.index')">
                     注文一覧
