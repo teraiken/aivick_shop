@@ -7,17 +7,15 @@ use Stripe\Stripe;
 
 class StripeService
 {
-    private $stripe;
-
     public function __construct()
     {
-        $this->stripe = Stripe::setApiKey(config('app.stripe_secret_key'));
+        Stripe::setApiKey(config('app.stripe_secret_key'));
     }
 
     public function getCard($user): ?array
     {
         $card = null;
-        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user);
+        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user->stripe_id);
         if (!$defaultCardId) {
             return $card;
         }
@@ -49,7 +47,7 @@ class StripeService
 
     public function updateCustomer($token, $user)
     {
-        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user);
+        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user->stripe_id);
         $card = $customer->createSource(
             $stripeId,
             ['source' => $token]
@@ -63,7 +61,7 @@ class StripeService
 
     public function deleteCard($user)
     {
-        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user);
+        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user->stripe_id);
         $customer->deleteSource(
             $stripeId,
             $defaultCardId,
@@ -71,17 +69,16 @@ class StripeService
         );
     }
 
-    private function getStripeInfo($user)
+    private function getStripeInfo($stripeId)
     {
-        $stripeId = $customer = $defaultCardId = null;
-        $stripeId = $user->stripe_id;
+        $customer = $defaultCardId = null;
         if (!$stripeId) {
-            return array($stripeId, $customer, $defaultCardId);
+            return [$stripeId, $customer, $defaultCardId];
         }
 
         $customer = Customer::retrieve($stripeId);
         $defaultCardId = $customer->default_source;
 
-        return array($stripeId, $customer, $defaultCardId);
+        return [$stripeId, $customer, $defaultCardId];
     }
 }

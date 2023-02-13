@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
 {
-    private $stripeService;
+    private StripeService $stripeService;
 
     public function __construct(StripeService $stripeService)
     {
