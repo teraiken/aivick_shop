@@ -2,18 +2,22 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth;
 use Stripe\Customer;
 use Stripe\Stripe;
 
 class StripeService
 {
-    public function getCard(): ?array
-    {
-        Stripe::setApiKey(config('app.stripe_secret_key'));
+    private $stripe;
 
+    public function __construct()
+    {
+        $this->stripe = Stripe::setApiKey(config('app.stripe_secret_key'));
+    }
+
+    public function getCard($user): ?array
+    {
         $card = null;
-        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo();
+        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user);
         if (!$defaultCardId) {
             return $card;
         }
@@ -32,25 +36,20 @@ class StripeService
         return $card;
     }
 
-    public function createCustomer($token)
+    public function createCustomer($token, $user)
     {
-        Stripe::setApiKey(config('app.stripe_secret_key'));
-
         $customer = Customer::create([
             'source' => $token,
-            'email' => Auth::user()->email,
+            'email' => $user->email,
         ]);
 
-        $user = Auth::user();
         $user->stripe_id = $customer->id;
         $user->save();
     }
 
-    public function updateCustomer($token)
+    public function updateCustomer($token, $user)
     {
-        Stripe::setApiKey(config('app.stripe_secret_key'));
-
-        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo();
+        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user);
         $card = $customer->createSource(
             $stripeId,
             ['source' => $token]
@@ -62,11 +61,9 @@ class StripeService
         );
     }
 
-    public function deleteCard()
+    public function deleteCard($user)
     {
-        Stripe::setApiKey(config('app.stripe_secret_key'));
-
-        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo();
+        [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user);
         $customer->deleteSource(
             $stripeId,
             $defaultCardId,
@@ -74,10 +71,10 @@ class StripeService
         );
     }
 
-    private function getStripeInfo()
+    private function getStripeInfo($user)
     {
         $stripeId = $customer = $defaultCardId = null;
-        $stripeId = Auth::user()->stripe_id;
+        $stripeId = $user->stripe_id;
         if (!$stripeId) {
             return array($stripeId, $customer, $defaultCardId);
         }
