@@ -41,7 +41,8 @@
                                 @csrf
                                 @endif
                                 <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                    data-key="{{ env('STRIPE_PUBLIC_KEY') }}" data-name="支払い情報" data-label="カードを登録する"
+                                    data-key="{{ config('app.stripe_public_key') }}" data-name="支払い情報"
+                                    data-label="カードを登録する"
                                     data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                     data-locale="ja" data-email="{{ Auth::user()->email }}" data-panel-label="カードを登録する">
                                 </script>

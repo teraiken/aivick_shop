@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Card;
+use App\Services\StripeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,12 +10,13 @@ class CardController extends Controller
 {
     /**
      * Display the specified resource.
-     *
+     * 
+     * @param  \App\Services\StripeService  $stripeService
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(StripeService $stripeService)
     {
-        $card = Card::getCard();
+        $card = $stripeService->getCard();
 
         return view('card.show', compact('card'));
     }
@@ -24,14 +25,15 @@ class CardController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Services\StripeService  $stripeService
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, StripeService $stripeService)
     {
         if (Auth::user()->stripe_id) {
-            Card::updateCustomer($request->stripeToken);
+            $stripeService->updateCustomer($request->stripeToken);
         } else {
-            Card::createCustomer($request->stripeToken);
+            $stripeService->createCustomer($request->stripeToken);
         }
 
         return to_route('card.show');
@@ -41,25 +43,27 @@ class CardController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Services\StripeService  $stripeService
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, StripeService $stripeService)
     {
-        Card::deleteCard();
+        $stripeService->deleteCard();
 
-        Card::updateCustomer($request->stripeToken);
+        $stripeService->updateCustomer($request->stripeToken);
 
         return to_route('card.show');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     * 
+     * @param  \App\Services\StripeService  $stripeService
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy(StripeService $stripeService)
     {
-        Card::deleteCard();
+        $stripeService->deleteCard();
 
         return to_route('card.show');
     }
