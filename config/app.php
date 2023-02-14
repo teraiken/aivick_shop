@@ -215,5 +215,6 @@ return [
     'tax_rate' => 8,
 
     'stripe_secret_key' => env('STRIPE_SECRET_KEY'),
+    'stripe_public_key' => env('STRIPE_PUBLIC_KEY'),
 
 ];
