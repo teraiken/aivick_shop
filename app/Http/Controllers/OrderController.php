@@ -64,7 +64,7 @@ class OrderController extends Controller
         }
 
         $addAddress = [
-            'address' => $request->selectedAddress,
+            'selectedAddress' => $request->selectedAddress,
             'name' => $request->name,
             'postal_code' => $request->postal_code,
             'pref_id' => $request->pref_id,
