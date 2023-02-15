@@ -64,7 +64,7 @@ class OrderController extends Controller
         }
 
         $addAddress = [
-            'address' => $request->address,
+            'address' => $request->selectedAddress,
             'name' => $request->name,
             'postal_code' => $request->postal_code,
             'pref_id' => $request->pref_id,
@@ -95,7 +95,7 @@ class OrderController extends Controller
             $order->shipping_fee = Area::find(config('area')[session('address')['pref_id']])->currentShippingFee->fee;
             $order->save();
 
-            if (session('address')['address'] == 'newAddress') {
+            if (session('address')['selectedAddress'] == 'newAddress') {
                 Address::create([
                     'user_id' => Auth::id(),
                     'name' => $order->name,
@@ -121,13 +121,13 @@ class OrderController extends Controller
                 $product->stock -= $cartProduct['quantity'];
                 $product->save();
             }
-        });
 
-        Charge::create(array(
-            'amount' => Calculator::orderSum($order),
-            'currency' => 'jpy',
-            'customer' => Auth::user()->stripe_id,
-        ));
+            Charge::create(array(
+                'amount' => Calculator::orderSum($order),
+                'currency' => 'jpy',
+                'customer' => Auth::user()->stripe_id,
+            ));
+        });
 
         Mail::to(Auth::user())->send(new OrderMail($order));
 

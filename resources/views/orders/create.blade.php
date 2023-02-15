@@ -12,9 +12,10 @@
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <x-input-label>配送先</x-input-label><br>
-                                <input type="radio" id="registeredAddress" name="address" value="registeredAddress" {{
-                                    old('address')=="registeredAddress" ? 'checked' : '' }} checked>登録済住所から選択
-                                <input type="radio" id="newAddress" name="address" value="newAddress" {{
+                                <input type="radio" id="registeredAddress" name="selectedAddress"
+                                    value="registeredAddress" {{ old('address')=="registeredAddress" ? 'checked' : '' }}
+                                    checked>登録済住所から選択
+                                <input type="radio" id="newAddress" name="selectedAddress" value="newAddress" {{
                                     old('address')=="newAddress" ? 'checked' : '' }} required>新しい配送先
                             </div>
                         </div>
