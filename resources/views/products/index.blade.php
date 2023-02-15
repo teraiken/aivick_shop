@@ -52,7 +52,7 @@
                             @endphp
 
                             @if ($availableQuantity !== 0)
-                            <form method="post" action="{{ route('cart.add')}}">
+                            <form class="addCartForm" method="post" action="{{ route('cart.add')}}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $product->id }}">
                                 <select name="quantity" required>
@@ -72,4 +72,7 @@
             </div>
         </div>
     </section>
+    @push('script')
+    @vite(['resources/js/cart.js'])
+    @endpush
 </x-app-layout>

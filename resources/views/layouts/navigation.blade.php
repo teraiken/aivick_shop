@@ -76,12 +76,10 @@
                         <img src="{{ asset('storage/image/cart.png') }}"
                             class="block h-9 w-auto fill-current text-gray-800">
                     </a>
-                    @if (!empty(session('cart')))
                     <div
-                        class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0">
-                        {{count(session('cart')) }}
+                        class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0 cartCount">
+                        {{ !empty(session('cart')) ? count(session('cart')) : 0 }}
                     </div>
-                    @endif
                 </div>
             </div>
 
@@ -103,12 +101,10 @@
                         <img src="{{ asset('storage/image/cart.png') }}"
                             class="block h-9 w-auto fill-current text-gray-800">
                     </a>
-                    @if (!empty(session('cart')))
                     <div
-                        class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0">
-                        {{count(session('cart')) }}
+                        class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0 cartCount">
+                        {{ !empty(session('cart')) ? count(session('cart')) : 0 }}
                     </div>
-                    @endif
                 </div>
             </div>
         </div>
