@@ -110,6 +110,20 @@ use App\Models\Area;
             </tr>
         </table>
 
+        <table class="table-auto w-full text-left whitespace-no-wrap mb-6">
+            <caption class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                カード情報
+            </caption>
+            <tr>
+                <x-th>カード番号</x-th>
+                <x-td>{{ $card['number'] }}</x-td>
+            </tr>
+            <tr>
+                <x-th>有効期限</x-th>
+                <x-td class="border-b-2">{{ $card['exp'] }}</x-td>
+            </tr>
+        </table>
+
         <div class="flex">
             <div class="flex mx-auto">
                 <x-primary-button onclick="history.back();">
@@ -118,18 +132,10 @@ use App\Models\Area;
 
                 <form class="ml-4" method="post" action="{{ route('orders.store') }}">
                     @csrf
-                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="{{ env('STRIPE_PUBLIC_KEY') }}" data-amount="{{ $sum + $shipping }}"
-                        data-name="Stripe Demo" data-label="注文を確定する" data-description="これはデモ決済です"
-                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png" data-locale="auto"
-                        data-currency="JPY" data-email="{{ Auth::user()->email }}">
-                    </script>
+                    <x-danger-button>注文を確定する</x-danger-button>
                 </form>
             </div>
         </div>
         @endif
     </div>
-    @push('style')
-    @vite(['resources/css/style.css'])
-    @endpush
 </x-app-layout>

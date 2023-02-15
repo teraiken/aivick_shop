@@ -6,18 +6,25 @@ use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Stripe\Stripe;
 use Stripe\Charge;
 use App\Helpers\Calculator;
 use App\Http\Requests\AddressRequest;
 use App\Mail\OrderMail;
 use App\Models\Area;
+use App\Services\StripeService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    private StripeService $stripeService;
+
+    public function __construct(StripeService $stripeService)
+    {
+        $this->stripeService = $stripeService;
+    }
+
     public function index()
     {
         $maxRecords = 5;
@@ -35,8 +42,9 @@ class OrderController extends Controller
         }
 
         $addresses = Auth::user()->addresses;
+        $card = $this->stripeService->getCard(Auth::user());
 
-        return view('orders.create', compact('addresses'));
+        return view('orders.create', compact('addresses', 'card'));
     }
 
     public function confirm(AddressRequest $request)
@@ -56,7 +64,7 @@ class OrderController extends Controller
         }
 
         $addAddress = [
-            'address' => $request->address,
+            'address' => $request->selectedAddress,
             'name' => $request->name,
             'postal_code' => $request->postal_code,
             'pref_id' => $request->pref_id,
@@ -67,57 +75,59 @@ class OrderController extends Controller
 
         session()->put('address', $addAddress);
 
-        return view('orders.confirm');
+        $card = $this->stripeService->getCard(Auth::user());
+
+        return view('orders.confirm', compact('card'));
     }
 
-    public function store(Request $request)
+    public function store()
     {
         $order = new Order;
 
-        $order->user_id = Auth::id();
-        $order->name = session('address')['name'];
-        $order->postal_code = session('address')['postal_code'];
-        $order->pref_id = session('address')['pref_id'];
-        $order->address1 = session('address')['address1'];
-        $order->address2 = session('address')['address2'];
-        $order->phone_number = session('address')['phone_number'];
-        $order->shipping_fee = Area::find(config('area')[session('address')['pref_id']])->currentShippingFee->fee;
-        $order->save();
+        DB::transaction(function () use ($order) {
+            $order->user_id = Auth::id();
+            $order->name = session('address')['name'];
+            $order->postal_code = session('address')['postal_code'];
+            $order->pref_id = session('address')['pref_id'];
+            $order->address1 = session('address')['address1'];
+            $order->address2 = session('address')['address2'];
+            $order->phone_number = session('address')['phone_number'];
+            $order->shipping_fee = Area::find(config('area')[session('address')['pref_id']])->currentShippingFee->fee;
+            $order->save();
 
-        if (session('address')['address'] == 'newAddress') {
-            Address::create([
-                'user_id' => Auth::id(),
-                'name' => $order->name,
-                'postal_code' => $order->postal_code,
-                'pref_id' => $order->pref_id,
-                'address1' => $order->address1,
-                'address2' => $order->address2,
-                'phone_number' => $order->phone_number,
-            ]);
-        }
+            if (session('address')['selectedAddress'] == 'newAddress') {
+                Address::create([
+                    'user_id' => Auth::id(),
+                    'name' => $order->name,
+                    'postal_code' => $order->postal_code,
+                    'pref_id' => $order->pref_id,
+                    'address1' => $order->address1,
+                    'address2' => $order->address2,
+                    'phone_number' => $order->phone_number,
+                ]);
+            }
 
-        foreach (session('cart') as $cartProduct) {
-            OrderDetail::create([
-                'order_id' => $order->id,
-                'product_id' => $cartProduct['id'],
-                'price' => $cartProduct['price'],
-                'quantity' => $cartProduct['quantity'],
-                'tax_rate' => config('app')['tax_rate'],
-            ]);
+            foreach (session('cart') as $cartProduct) {
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartProduct['id'],
+                    'price' => $cartProduct['price'],
+                    'quantity' => $cartProduct['quantity'],
+                    'tax_rate' => config('app')['tax_rate'],
+                ]);
 
-            $product = Product::find($cartProduct['id']);
+                $product = Product::find($cartProduct['id']);
 
-            $product->stock -= $cartProduct['quantity'];
-            $product->save();
-        }
+                $product->stock -= $cartProduct['quantity'];
+                $product->save();
+            }
 
-        Stripe::setApiKey(config('app.stripe_secret_key'));
-
-        Charge::create(array(
-            'amount' => Calculator::orderSum($order),
-            'currency' => 'jpy',
-            'source' => $request->stripeToken,
-        ));
+            Charge::create(array(
+                'amount' => Calculator::orderSum($order),
+                'currency' => 'jpy',
+                'customer' => Auth::user()->stripe_id,
+            ));
+        });
 
         Mail::to(Auth::user())->send(new OrderMail($order));
 

@@ -1,6 +1,6 @@
 window.onload = switchAddress;
 
-const addressRadios = document.getElementsByName("address");
+const addressRadios = document.getElementsByName("selectedAddress");
 for (let i = 0; i < addressRadios.length; i++) {
     addressRadios[i].addEventListener("click", switchAddress);
 }
