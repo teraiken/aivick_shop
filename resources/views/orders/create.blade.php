@@ -93,6 +93,7 @@
                         </div>
                     </div>
 
+                    @if ($card)
                     <div class="flex flex-wrap -m-2">
                         <div class="p-2 w-full text-center">
                             <x-primary-button>
@@ -100,6 +101,7 @@
                             </x-primary-button>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
             </div>
