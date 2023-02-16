@@ -43,8 +43,14 @@ class CartController extends Controller
             $message = $this->checkStockForAdd($addProduct);
         }
 
+        if ($message === __('cart.out_of_stock')) {
+            $stock = 0;
+        } else {
+            $stock = $product->stock - session('cart')[$product->id]['quantity'];
+        }
+
         return response()->json([
-            'stock' => $product->stock - session('cart')[$product->id]['quantity'],
+            'stock' => $stock,
             'count' => count(session('cart')),
             'message' => $message,
         ]);
