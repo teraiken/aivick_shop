@@ -1,3 +1,9 @@
+@php
+
+$cartCount = (!empty(session('cart')) ? count(session('cart')) : 0);
+
+@endphp
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed w-full z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="background-color: #ffb600">
@@ -78,7 +84,7 @@
                     </a>
                     <div
                         class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0 cartCount">
-                        {{ !empty(session('cart')) ? count(session('cart')) : 0 }}
+                        {{ $cartCount }}
                     </div>
                 </div>
             </div>
@@ -103,7 +109,7 @@
                     </a>
                     <div
                         class="w-5 h-5 inline-flex items-center justify-center rounded-full bg-gray-800 text-white mb-4 flex-shrink-0 cartCount">
-                        {{ !empty(session('cart')) ? count(session('cart')) : 0 }}
+                        {{ $cartCount }}
                     </div>
                 </div>
             </div>

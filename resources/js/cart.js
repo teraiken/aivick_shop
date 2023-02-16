@@ -26,24 +26,37 @@ $(function () {
                 const stock = Number(json["stock"]);
 
                 if (stock === 0) {
-                    // $(this).after(paragraph); では何故か動作しない。。
-                    select.parent(addCartForm).after(paragraph);
-                    select.parent(addCartForm).remove();
+                    removeAddCartForm(select, paragraph);
                 } else {
-                    select.children().remove();
-                    for (var i = 1; i <= stock; i++) {
-                        select.append($("<option>").text(i)).val(i);
-                    }
-                    select.val(1);
+                    rebuildOptions(select, stock);
                 }
 
                 $(".cartCount").text(json["count"]);
                 alert(json["message"]);
             })
             .fail(function (json) {
-                alert(
-                    "エラーが発生しました。ブラウザをリロードして再度お試しください。"
-                );
+                showErrorMessage();
             });
     });
 });
+
+const removeAddCartForm = function (select, paragraph) {
+    // $(this).after(paragraph); では何故か動作しない。。
+    select.parent(addCartForm).after(paragraph);
+    select.parent(addCartForm).remove();
+};
+
+const rebuildOptions = function (select, stock) {
+    select.children().remove();
+    for (let i = 1; i <= stock; i++) {
+        select.append($("<option>").text(i)).val(i);
+    }
+    select.val(1);
+};
+
+const showErrorMessage = function () {
+    $("html, body").animate({ scrollTop: 0 }, "fast");
+    $(".container").prepend(
+        "<div class='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-8'>通信に失敗しました。ブラウザをリロードして再度実行してください。</div>"
+    );
+};
