@@ -51,17 +51,7 @@ class OrderController extends Controller
     {
         session()->forget('errorMessages');
 
-        foreach (session('cart') as $cartProduct) {
-            $product = Product::find($cartProduct['id']);
-
-            if ($product->stock == 0) {
-                session()->forget('cart.' . $product->id);
-                session()->push('errorMessages', __('order.out_of_stock', ['productname' => $product->name]));
-            } elseif ($product->stock < $cartProduct['quantity']) {
-                session()->put('cart.' . $product->id . '.quantity', $product->stock);
-                session()->push('errorMessages', __('order.stock_short', ['productname' => $product->name]));
-            }
-        }
+        $this->checkStock();
 
         $addAddress = [
             'selectedAddress' => $request->selectedAddress,
@@ -80,8 +70,21 @@ class OrderController extends Controller
         return view('orders.confirm', compact('card'));
     }
 
+    public function short()
+    {
+        $card = $this->stripeService->getCard(Auth::user());
+
+        return view('orders.confirm', compact('card'));
+    }
+
     public function store()
     {
+        session()->forget('errorMessages');
+
+        if ($this->checkStock()) {
+            return to_route('orders.short');
+        }
+
         $order = new Order;
 
         DB::transaction(function () use ($order) {
@@ -116,7 +119,7 @@ class OrderController extends Controller
                     'tax_rate' => config('app')['tax_rate'],
                 ]);
 
-                $product = Product::find($cartProduct['id']);
+                $product = Product::lockForUpdate()->find($cartProduct['id']);
 
                 $product->stock -= $cartProduct['quantity'];
                 $product->save();
@@ -146,5 +149,26 @@ class OrderController extends Controller
         $orderDetails = $order->orderDetails;
 
         return view('orders.show', compact('order', 'orderDetails'));
+    }
+
+    private function checkStock(): bool
+    {
+        $shortFlag = false;
+
+        foreach (session('cart') as $cartProduct) {
+            $product = Product::find($cartProduct['id']);
+
+            if ($product->stock === 0) {
+                session()->forget('cart.' . $product->id);
+                session()->push('errorMessages', __('order.out_of_stock', ['productname' => $product->name]));
+                $shortFlag = true;
+            } elseif ($product->stock < $cartProduct['quantity']) {
+                session()->put('cart.' . $product->id . '.quantity', $product->stock);
+                session()->push('errorMessages', __('order.stock_short', ['productname' => $product->name]));
+                $shortFlag = true;
+            }
+        }
+
+        return $shortFlag;
     }
 }
