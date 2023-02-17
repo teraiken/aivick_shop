@@ -41,27 +41,33 @@ Route::prefix('cart')->controller(CartController::class)->name('cart.')->group(f
 
 Route::middleware('auth')->group(function () {
 
-    Route::resource('addresses', AddressController::class);
+    Route::prefix('my-page')->group(function () {
+
+        Route::resource('addresses', AddressController::class);
+
+        Route::prefix('card')->controller(CardController::class)->name('card.')->group(function () {
+            Route::get('/', 'show')->name('show');
+            Route::post('/', 'store')->name('store');
+            Route::patch('/', 'update')->name('update');
+            Route::delete('/', 'destroy')->name('destroy');
+        });
+
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::prefix('orders')->controller(OrderController::class)->name('orders.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{order}', 'show')->name('show');
+        });
+    });
 
     Route::prefix('orders')->controller(OrderController::class)->name('orders.')->group(function () {
-        Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/confirm', 'confirm')->name('confirm');
         Route::get('/short', 'short')->name('short');
         Route::post('/', 'store')->name('store');
-        Route::get('/{order}', 'show')->name('show');
     });
-
-    Route::prefix('card')->controller(CardController::class)->name('card.')->group(function () {
-        Route::get('/', 'show')->name('show');
-        Route::post('/', 'store')->name('store');
-        Route::patch('/', 'update')->name('update');
-        Route::delete('/', 'destroy')->name('destroy');
-    });
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
