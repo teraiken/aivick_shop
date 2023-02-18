@@ -35,7 +35,7 @@ class ProductController extends Controller
         $product = Product::onSale()->find($id);
 
         if (is_null($product)) {
-            session()->flash('errorMessage', __('cart.invalid_operation'));
+            session()->flash('errorMessage', __('cart.end_of_sale'));
             return to_route('products.index');
         }
 
