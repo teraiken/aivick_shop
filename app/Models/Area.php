@@ -33,4 +33,9 @@ class Area extends Model
     {
         return $this->hasOne(ShippingFee::class)->latestOfMany();
     }
+
+    public function prefs()
+    {
+        return $this->hasMany(Pref::class);
+    }
 }
