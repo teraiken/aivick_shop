@@ -16,11 +16,6 @@ class CartController extends Controller
     {
         $product = Product::onSale()->find($request->id);
 
-        if (is_null($product)) {
-            session()->flash('errorMessage', __('cart.invalid_operation'));
-            return to_route('products.index');
-        }
-
         if (array_key_exists($request->id, session('cart', []))) {
             $request->quantity += session('cart')[$request->id]['quantity'];
             $updateProduct = [
@@ -43,11 +38,7 @@ class CartController extends Controller
             $message = $this->checkStockForAdd($addProduct);
         }
 
-        if ($message === __('cart.out_of_stock')) {
-            $stock = 0;
-        } else {
-            $stock = $product->stock - session('cart')[$product->id]['quantity'];
-        }
+        $stock = $product->stock - (session('cart')[$product->id]['quantity'] ?? 0);
 
         return response()->json([
             'stock' => $stock,
@@ -61,7 +52,8 @@ class CartController extends Controller
         $product = Product::onSale()->find($request->id);
 
         if (is_null($product)) {
-            session()->flash('errorMessage', __('cart.invalid_operation'));
+            session()->forget('cart.' . $request->id);
+            session()->flash('errorMessage', __('cart.end_of_sale'));
             return to_route('cart.index');
         }
 
@@ -71,7 +63,11 @@ class CartController extends Controller
             'quantity' => $request->quantity,
         ];
 
-        $this->checkStockForUpdate($updateProduct);
+        $message = $this->checkStockForUpdate($updateProduct);
+
+        if (!($message === __('cart.add_success'))) {
+            session()->flash('errorMessage', $message);
+        }
 
         return to_route('cart.index');
     }

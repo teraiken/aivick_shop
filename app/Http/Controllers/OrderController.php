@@ -156,9 +156,13 @@ class OrderController extends Controller
         $shortFlag = false;
 
         foreach (session('cart') as $cartProduct) {
-            $product = Product::find($cartProduct['id']);
+            $product = Product::onSale()->find($cartProduct['id']);
 
-            if ($product->stock === 0) {
+            if (is_null($product)) {
+                session()->forget('cart.' . $cartProduct['id']);
+                session()->push('errorMessages', __('order.end_of_sale', ['productname' => $cartProduct['name']]));
+                $shortFlag = true;
+            } elseif ($product->stock === 0) {
                 session()->forget('cart.' . $product->id);
                 session()->push('errorMessages', __('order.out_of_stock', ['productname' => $product->name]));
                 $shortFlag = true;

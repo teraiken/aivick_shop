@@ -138,4 +138,7 @@ use App\Models\Area;
         </div>
         @endif
     </div>
+    @push('script')
+    @vite(['resources/js/form.js'])
+    @endpush
 </x-app-layout>
