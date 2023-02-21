@@ -36,7 +36,7 @@ use App\Helpers\Calculator;
                     <x-td>{{ $order->user->name }}</x-td>
                     <x-td>
                         〒{{ substr_replace($order->postal_code, '-', 3, 0) }}<br>
-                        {{ config('pref')[$order->pref_id] }}{{ $order->address1 }}…<br>
+                        {{ $order->pref->name }}{{ $order->address1 }}…<br>
                         {{ $order->name }}
                     </x-td>
                     <x-td>{{ Formatter::subject($order) }}</x-td>
