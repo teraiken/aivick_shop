@@ -17,6 +17,6 @@ $orderDetails = $order->orderDetails;
 100) / 100) }}×{{ $orderDetail->quantity }})<br>
 @endforeach
 注文者:{{ $order->user->name }}様<br>
-配送先:{{ $order->name }}様(〒{{ substr_replace($order->postal_code, '-', 3, 0) }} {{ config('pref')[$order->pref_id] }}{{
+配送先:{{ $order->name }}様(〒{{ substr_replace($order->postal_code, '-', 3, 0) }} {{ $order->pref->name }}{{
 $order->address1 }}{{ $order->address2 }} Tel{{ $order->phone_number }})<br>
 支払金額:¥{{ number_format(Calculator::orderSum($order)) }}(送料:¥{{ number_format($order->shipping_fee) }})<br>

@@ -32,9 +32,9 @@
                                 <x-input-label for="pref_id">都道府県</x-input-label><br>
                                 <select name="pref_id" required>
                                     <option value="">選択してください</option>
-                                    @foreach(config('pref') as $pref_id => $name)
-                                    <option value="{{ $pref_id }}" {{ old('pref_id')==$pref_id ? 'selected' : '' }}>{{
-                                        $name }}</option>
+                                    @foreach($prefs as $pref)
+                                    <option value="{{ $pref->id }}" {{ old('pref_id')==$pref->id ? 'selected' : '' }}>{{
+                                        $pref->name }}</option>
                                     @endforeach
                                 </select>
                                 <x-input-error :messages="$errors->get('pref_id')" class="mt-2" />
