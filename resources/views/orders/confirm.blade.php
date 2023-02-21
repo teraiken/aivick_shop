@@ -73,7 +73,7 @@ use App\Models\Area;
                     <x-th>送料</x-th>
                     <x-td></x-td>
                     <x-td>¥{{ number_format($shipping =
-                        Area::find(config('area')[session('address')['pref_id']])->currentShippingFee->fee) }}</x-td>
+                        $pref->area->currentShippingFee->fee) }}</x-td>
                 </tr>
 
                 <tr>
@@ -96,7 +96,7 @@ use App\Models\Area;
             <tr>
                 <x-th>住所</x-th>
                 <x-td>
-                    {{ config('pref')[session('address')['pref_id']] }}{{ session('address')['address1'] }}<br>
+                    {{ $pref->name }}{{ session('address')['address1'] }}<br>
                     {{ session('address')['address2'] }}
                 </x-td>
             </tr>

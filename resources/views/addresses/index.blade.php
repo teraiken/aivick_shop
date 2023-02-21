@@ -22,7 +22,7 @@
                 @foreach ($addresses as $address)
                 <tr>
                     <x-td>〒{{ substr_replace($address->postal_code, '-', 3, 0) }}<br>
-                        {{ config('pref')[$address->pref_id] }}{{ $address->address1 }}…
+                        {{ $address->pref->name }}{{ $address->address1 }}…
                     </x-td>
                     <x-td>{{ $address->name }}</x-td>
                     <x-td>{{ $address->phone_number }}</x-td>

@@ -11,7 +11,7 @@ use Stripe\Charge;
 use App\Helpers\Calculator;
 use App\Http\Requests\AddressRequest;
 use App\Mail\OrderMail;
-use App\Models\Area;
+use App\Models\Pref;
 use App\Services\StripeService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -42,9 +42,10 @@ class OrderController extends Controller
         }
 
         $addresses = Auth::user()->addresses;
+        $prefs = Pref::all();
         $card = $this->stripeService->getCard(Auth::user());
 
-        return view('orders.create', compact('addresses', 'card'));
+        return view('orders.create', compact('addresses', 'prefs', 'card'));
     }
 
     public function confirm(AddressRequest $request)
@@ -65,9 +66,10 @@ class OrderController extends Controller
 
         session()->put('address', $addAddress);
 
+        $pref = Pref::find($request->pref_id);
         $card = $this->stripeService->getCard(Auth::user());
 
-        return view('orders.confirm', compact('card'));
+        return view('orders.confirm', compact('pref', 'card'));
     }
 
     public function short()
@@ -95,7 +97,7 @@ class OrderController extends Controller
             $order->address1 = session('address')['address1'];
             $order->address2 = session('address')['address2'];
             $order->phone_number = session('address')['phone_number'];
-            $order->shipping_fee = Area::find(config('area')[session('address')['pref_id']])->currentShippingFee->fee;
+            $order->shipping_fee = Pref::find(session('address')['pref_id'])->area->currentShippingFee->fee;
             $order->save();
 
             if (session('address')['selectedAddress'] == 'newAddress') {

@@ -88,7 +88,7 @@ use App\Helpers\Calculator;
             <tr>
                 <x-th>住所</x-th>
                 <x-td>
-                    {{ config('pref')[$order->pref_id] }}{{ $order->address1 }}<br>
+                    {{ $order->pref->name }}{{ $order->address1 }}<br>
                     {{ $order->address2 }}
                 </x-td>
             </tr>

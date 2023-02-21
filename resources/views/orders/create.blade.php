@@ -27,7 +27,7 @@
                                     @foreach($addresses as $address)
                                     <option value="{{ $address->id }}" {{ old('addressId')==$address->id ? 'selected' :
                                         '' }}>〒{{ substr_replace($address->postal_code, '-', 3, 0) }}<br>
-                                        {{ config('pref')[$address->pref_id] }}{{ $address->address1 }}…<br>
+                                        {{ $address->pref->name }}{{ $address->address1 }}…<br>
                                         {{ $address->name }}</option>
                                     @endforeach
                                 </select>
@@ -59,9 +59,9 @@
                                 <x-input-label for="pref_id">都道府県</x-input-label><br>
                                 <select id="pref_id" name="pref_id">
                                     <option value="">選択してください</option>
-                                    @foreach(config('pref') as $pref_id => $name)
-                                    <option value="{{ $pref_id }}" {{ old('pref_id')==$pref_id ? 'selected' : '' }}>
-                                        {{ $name }}</option>
+                                    @foreach($prefs as $pref)
+                                    <option value="{{ $pref->id }}" {{ old('pref_id')==$pref->id ? 'selected' : '' }}>
+                                        {{ $pref->name }}</option>
                                     @endforeach
                                 </select>
                                 <x-input-error :messages="$errors->get('pref_id')" class="mt-2" />

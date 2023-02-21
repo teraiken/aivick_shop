@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Http\Requests\AddressRequest;
+use App\Models\Pref;
 use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
@@ -30,7 +31,9 @@ class AddressController extends Controller
      */
     public function create()
     {
-        return view('addresses.create');
+        $prefs = Pref::all();
+
+        return view('addresses.create', compact('prefs'));
     }
 
     /**
@@ -63,8 +66,9 @@ class AddressController extends Controller
     public function edit($id)
     {
         $address = Address::whereUserId(Auth::id())->find($id);
+        $prefs = Pref::all();
 
-        return view('addresses.edit', compact('address'));
+        return view('addresses.edit', compact('address', 'prefs'));
     }
 
     /**
