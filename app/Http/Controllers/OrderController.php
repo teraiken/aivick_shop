@@ -28,7 +28,7 @@ class OrderController extends Controller
     }
 
     /**
-     * リソースの一覧を表示する。
+     * 注文の一覧を表示する。
      *
      * @return View
      */
@@ -42,7 +42,7 @@ class OrderController extends Controller
     }
 
     /**
-     * 新規リソースの作成フォームを表示する。
+     * 新規注文の作成フォームを表示する。
      *
      * @return RedirectResponse|View
      */
@@ -61,7 +61,7 @@ class OrderController extends Controller
     }
 
     /**
-     * 新規リソースの確認画面を表示する。
+     * 新規注文の確認画面を表示する。
      *
      * @param AddressRequest $request
      * @return View
@@ -91,7 +91,7 @@ class OrderController extends Controller
     }
 
     /**
-     * 新規リソースが在庫不足の場合のみ表示する。
+     * 新規注文が在庫不足の場合のみ表示する。
      *
      * @return View
      */
@@ -103,7 +103,7 @@ class OrderController extends Controller
     }
 
     /**
-     * 新しく作成されたリソースをストレージに格納する。
+     * 新しく作成された注文をストレージに格納する。
      *
      * @return RedirectResponse
      */
@@ -173,7 +173,7 @@ class OrderController extends Controller
     }
 
     /**
-     * 指定されたリソースを表示する。
+     * 指定された注文を表示する。
      *
      * @param [type] $id
      * @return View

@@ -11,7 +11,7 @@ use Illuminate\View\View;
 class CartController extends Controller
 {
     /**
-     * リソースの一覧を表示する。
+     * カートの一覧を表示する。
      *
      * @return View
      */

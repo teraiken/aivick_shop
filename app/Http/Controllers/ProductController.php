@@ -12,7 +12,7 @@ use Illuminate\View\View;
 class ProductController extends Controller
 {
     /**
-     * リソースの一覧を表示する。
+     * 商品の一覧を表示する。
      *
      * @param Request $request
      * @return View
@@ -28,7 +28,7 @@ class ProductController extends Controller
     }
 
     /**
-     * 指定されたリソースを表示する。
+     * 指定された商品を表示する。
      *
      * @param [type] $id
      * @return RedirectResponse|View

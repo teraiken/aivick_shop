@@ -10,7 +10,7 @@ use Illuminate\View\View;
 class AdminController extends Controller
 {
     /**
-     * リソースの一覧を表示する。
+     * 管理者の一覧を表示する。
      *
      * @param Request $request
      * @return View

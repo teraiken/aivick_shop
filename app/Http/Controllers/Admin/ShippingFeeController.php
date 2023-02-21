@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class ShippingFeeController extends Controller
 {
     /**
-     * 新規リソースの作成フォームを表示する。
+     * 新規送料の作成フォームを表示する。
      *
      * @param [type] $id
      * @return View
@@ -26,7 +26,7 @@ class ShippingFeeController extends Controller
     }
 
     /**
-     * 新しく作成されたリソースをストレージに格納する。
+     * 新しく作成された送料をストレージに格納する。
      *
      * @param ShippingFeeRequest $request
      * @param [type] $id
@@ -52,7 +52,7 @@ class ShippingFeeController extends Controller
     }
 
     /**
-     * 指定されたリソースを編集するためのフォームを表示する。
+     * 指定された送料を編集するためのフォームを表示する。
      *
      * @param [type] $id
      * @return View
@@ -67,7 +67,7 @@ class ShippingFeeController extends Controller
     }
 
     /**
-     * ストレージ内の指定されたリソースを更新する。
+     * ストレージ内の指定された送料を更新する。
      *
      * @param ShippingFeeRequest $request
      * @param [type] $id
@@ -128,7 +128,7 @@ class ShippingFeeController extends Controller
     }
 
     /**
-     * 指定されたリソースをストレージから削除する。
+     * 指定された送料をストレージから削除する。
      *
      * @param [type] $id
      * @return RedirectResponse

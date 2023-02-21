@@ -16,7 +16,7 @@ use Illuminate\View\View;
 class ProductController extends Controller
 {
     /**
-     * リソースの一覧を表示する。
+     * 商品の一覧を表示する。
      *
      * @param Request $request
      * @return View
@@ -34,7 +34,7 @@ class ProductController extends Controller
     }
 
     /**
-     * 新規リソースの作成フォームを表示する。
+     * 新規商品の作成フォームを表示する。
      *
      * @return View
      */
@@ -44,7 +44,7 @@ class ProductController extends Controller
     }
 
     /**
-     * 新しく作成されたリソースをストレージに格納する。
+     * 新しく作成された商品をストレージに格納する。
      *
      * @param ProductRequestForStore $request
      * @return RedirectResponse
@@ -69,7 +69,7 @@ class ProductController extends Controller
     }
 
     /**
-     * 指定されたリソースを表示する。
+     * 指定された商品を表示する。
      *
      * @param [type] $id
      * @return View
@@ -82,7 +82,7 @@ class ProductController extends Controller
     }
 
     /**
-     * 指定されたリソースを編集するためのフォームを表示する。
+     * 指定された商品を編集するためのフォームを表示する。
      *
      * @param [type] $id
      * @return View
@@ -95,7 +95,7 @@ class ProductController extends Controller
     }
 
     /**
-     * ストレージ内の指定されたリソースを更新する。
+     * ストレージ内の指定された商品を更新する。
      *
      * @param ProductRequestForUpdate $request
      * @param [type] $id
@@ -126,7 +126,7 @@ class ProductController extends Controller
     }
 
     /**
-     * 指定されたリソースをストレージから削除する。
+     * 指定された商品をストレージから削除する。
      *
      * @param [type] $id
      * @return RedirectResponse

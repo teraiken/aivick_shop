@@ -10,7 +10,7 @@ use Illuminate\View\View;
 class OrderController extends Controller
 {
     /**
-     * リソースの一覧を表示する。
+     * 注文の一覧を表示する。
      *
      * @param Request $request
      * @return View
@@ -28,7 +28,7 @@ class OrderController extends Controller
     }
 
     /**
-     * 指定されたリソースを表示する。
+     * 指定された注文を表示する。
      *
      * @param [type] $id
      * @return View

@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class AreaController extends Controller
 {
     /**
-     * リソースの一覧を表示する。
+     * 地域の一覧を表示する。
      *
      * @return View
      */
@@ -27,7 +27,7 @@ class AreaController extends Controller
     }
 
     /**
-     * 新規リソースの作成フォームを表示する。
+     * 新規地域の作成フォームを表示する。
      *
      * @return View
      */
@@ -37,7 +37,7 @@ class AreaController extends Controller
     }
 
     /**
-     * 新しく作成されたリソースをストレージに格納する。
+     * 新しく作成された地域をストレージに格納する。
      *
      * @param AreaRequestForStore $request
      * @return RedirectResponse
@@ -60,7 +60,7 @@ class AreaController extends Controller
     }
 
     /**
-     * 指定されたリソースを表示する。
+     * 指定された地域を表示する。
      *
      * @param [type] $id
      * @return View
@@ -75,7 +75,7 @@ class AreaController extends Controller
     }
 
     /**
-     * ストレージ内の指定されたリソースを更新する。
+     * ストレージ内の指定された地域を更新する。
      *
      * @param AreaRequestForUpdate $request
      * @param [type] $id
@@ -92,7 +92,7 @@ class AreaController extends Controller
     }
 
     /**
-     * 指定されたリソースをストレージから削除する。
+     * 指定された地域をストレージから削除する。
      *
      * @param [type] $id
      * @return RedirectResponse

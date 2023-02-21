@@ -12,7 +12,7 @@ use Illuminate\View\View;
 class AddressController extends Controller
 {
     /**
-     * リソースの一覧を表示する。
+     * 配送先の一覧を表示する。
      *
      * @return View
      */
@@ -26,7 +26,7 @@ class AddressController extends Controller
     }
 
     /**
-     * 新規リソースの作成フォームを表示する。
+     * 新規配送先の作成フォームを表示する。
      *
      * @return View
      */
@@ -38,7 +38,7 @@ class AddressController extends Controller
     }
 
     /**
-     * 新しく作成されたリソースをストレージに格納する。
+     * 新しく作成された配送先をストレージに格納する。
      *
      * @param AddressRequest $request
      * @return RedirectResponse
@@ -59,7 +59,7 @@ class AddressController extends Controller
     }
 
     /**
-     * 指定されたリソースを編集するためのフォームを表示する。
+     * 指定された配送先を編集するためのフォームを表示する。
      *
      * @param [type] $id
      * @return View
@@ -73,7 +73,7 @@ class AddressController extends Controller
     }
 
     /**
-     * ストレージ内の指定されたリソースを更新する。
+     * ストレージ内の指定された配送先を更新する。
      *
      * @param AddressRequest $request
      * @param [type] $id
@@ -95,7 +95,7 @@ class AddressController extends Controller
     }
 
     /**
-     * 指定されたリソースをストレージから削除する。
+     * 指定された配送先をストレージから削除する。
      *
      * @param [type] $id
      * @return RedirectResponse

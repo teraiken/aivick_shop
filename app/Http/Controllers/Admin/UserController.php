@@ -10,7 +10,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * リソースの一覧を表示する。
+     * 会員の一覧を表示する。
      *
      * @param Request $request
      * @return View

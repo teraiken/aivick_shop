@@ -18,7 +18,7 @@ class CardController extends Controller
     }
 
     /**
-     * 指定されたリソースを表示する。
+     * 指定されたカードを表示する。
      *
      * @return View
      */
@@ -30,7 +30,7 @@ class CardController extends Controller
     }
 
     /**
-     * 新しく作成されたリソースをストレージに格納する。
+     * 新しく作成されたカードをストレージに格納する。
      *
      * @param Request $request
      * @return RedirectResponse
@@ -47,7 +47,7 @@ class CardController extends Controller
     }
 
     /**
-     * ストレージ内の指定されたリソースを更新する。
+     * ストレージ内の指定されたカードを更新する。
      *
      * @param Request $request
      * @return RedirectResponse
@@ -62,7 +62,7 @@ class CardController extends Controller
     }
 
     /**
-     * 指定されたリソースをストレージから削除する。
+     * 指定されたカードをストレージから削除する。
      *
      * @return RedirectResponse
      */
