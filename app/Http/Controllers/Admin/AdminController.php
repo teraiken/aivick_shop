@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class AdminController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * リソースの一覧を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $maxRecords = 5;
 
@@ -23,16 +25,5 @@ class AdminController extends Controller
         $admins = $query->orderBy('id', 'desc')->paginate($maxRecords);
 
         return view('admin.admins.index', compact('admins', 'search'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 }

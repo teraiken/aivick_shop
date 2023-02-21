@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * リソースの一覧を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $maxRecords = 5;
 
@@ -23,16 +25,5 @@ class UserController extends Controller
         $users = $query->paginate($maxRecords);
 
         return view('admin.users.index', compact('users', 'search'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 }

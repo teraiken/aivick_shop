@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class OrderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * リソースの一覧を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $maxRecords = 5;
 
@@ -26,12 +28,12 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 指定されたリソースを表示する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return View
      */
-    public function show($id)
+    public function show($id): View
     {
         $order = Order::find($id);
 
