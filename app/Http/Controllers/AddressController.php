@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Http\Requests\AddressRequest;
 use App\Models\Pref;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class AddressController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 配送先の一覧を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $maxRecords = 5;
 
@@ -25,11 +26,11 @@ class AddressController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 新規配送先の作成フォームを表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         $prefs = Pref::all();
 
@@ -37,12 +38,12 @@ class AddressController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しく作成された配送先をストレージに格納する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param AddressRequest $request
+     * @return RedirectResponse
      */
-    public function store(AddressRequest $request)
+    public function store(AddressRequest $request): RedirectResponse
     {
         Address::create([
             'user_id' => Auth::id(),
@@ -58,12 +59,12 @@ class AddressController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 指定された配送先を編集するためのフォームを表示する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return View
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $address = Address::whereUserId(Auth::id())->find($id);
         $prefs = Pref::all();
@@ -72,13 +73,13 @@ class AddressController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * ストレージ内の指定された配送先を更新する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param AddressRequest $request
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function update(AddressRequest $request, $id)
+    public function update(AddressRequest $request, $id): RedirectResponse
     {
         $address = Address::whereUserId(Auth::id())->find($id);
 
@@ -94,12 +95,12 @@ class AddressController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 指定された配送先をストレージから削除する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $address = Address::whereUserId(Auth::id())->find($id);
 

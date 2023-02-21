@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 商品の一覧を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $search = $request->search;
         $sortType = $request->sortType;
@@ -25,12 +28,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 指定された商品を表示する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return RedirectResponse|View
      */
-    public function show($id)
+    public function show($id): RedirectResponse|View
     {
         $product = Product::onSale()->find($id);
 
@@ -42,6 +45,13 @@ class ProductController extends Controller
         return view('products.show', compact('product'));
     }
 
+    /**
+     * キーワード検索と並び替えを行う。
+     *
+     * @param String|null $search
+     * @param String|null $sortType
+     * @return Collection
+     */
     private function searchKeywordAndSortBy(?String $search, ?String $sortType): Collection
     {
         $query = Product::search($search);

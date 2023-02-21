@@ -7,15 +7,18 @@ use App\Http\Requests\ShippingFeeRequest;
 use App\Models\Area;
 use App\Models\ShippingFee;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ShippingFeeController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
+     * 新規送料の作成フォームを表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return View
      */
-    public function create($id)
+    public function create($id): View
     {
         $area = Area::find($id);
 
@@ -23,16 +26,17 @@ class ShippingFeeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しく作成された送料をストレージに格納する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ShippingFeeRequest $request
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function store(ShippingFeeRequest $request, $id)
+    public function store(ShippingFeeRequest $request, $id): RedirectResponse
     {
         $area = Area::find($id);
 
-        if ($this->checkForOverlappingPeriodsSubstituteStartDate($request)) {
+        if ($this->checkForOverlappingPeriodsSubstituteStartDate($area, $request)) {
             session()->flash('errorMessage', __('shippingFee.overlapping_periods'));
             return to_route('admin.areas.show', compact('area'));
         }
@@ -48,12 +52,12 @@ class ShippingFeeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 指定された送料を編集するためのフォームを表示する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return View
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $shippingFee = ShippingFee::find($id);
 
@@ -63,13 +67,13 @@ class ShippingFeeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * ストレージ内の指定された送料を更新する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ShippingFeeRequest $request
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function update(ShippingFeeRequest $request, $id)
+    public function update(ShippingFeeRequest $request, $id): RedirectResponse
     {
         $updateShippingFee = ShippingFee::find($id);
 
@@ -78,7 +82,7 @@ class ShippingFeeController extends Controller
         $latestShippingFee = $area->latestShippingFee;
 
         if ($updateShippingFee->id === $latestShippingFee->id) {
-            if ($this->checkForOverlappingPeriodsSubstituteStartDate($request, $updateShippingFee)) {
+            if ($this->checkForOverlappingPeriodsSubstituteStartDate($area, $request, $updateShippingFee)) {
                 session()->flash('errorMessage', __('shippingFee.overlapping_periods'));
                 return to_route('admin.areas.show', compact('area'));
             }
@@ -124,12 +128,12 @@ class ShippingFeeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 指定された送料をストレージから削除する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $shippingFee = ShippingFee::find($id);
 
@@ -140,9 +144,17 @@ class ShippingFeeController extends Controller
         return to_route('admin.areas.show', compact('area'));
     }
 
-    private function checkForOverlappingPeriodsSubstituteStartDate($request, $updateShippingFee = null): bool
+    /**
+     * 適用開始日を代入し、期間の重複がないか確認する。
+     *
+     * @param Area $area
+     * @param ShippingFeeRequest $request
+     * @param ShippingFee|null $updateShippingFee
+     * @return boolean
+     */
+    private function checkForOverlappingPeriodsSubstituteStartDate(Area $area, ShippingFeeRequest $request, ShippingFee $updateShippingFee = null): bool
     {
-        $shippingFees = session('area')->shippingFees;
+        $shippingFees = $area->shippingFees;
 
         if (is_null($shippingFees)) {
             return false;
@@ -160,7 +172,15 @@ class ShippingFeeController extends Controller
         return false;
     }
 
-    private function isBetween($target_date, $start_date, $end_date): bool
+    /**
+     * ２つの日付の間に入っているか確認する。
+     *
+     * @param Carbon $target_date
+     * @param Carbon $start_date
+     * @param Carbon $end_date
+     * @return boolean
+     */
+    private function isBetween(Carbon $target_date, Carbon $start_date, Carbon $end_date): bool
     {
         return Carbon::parse($target_date)->between($start_date, $end_date);
     }

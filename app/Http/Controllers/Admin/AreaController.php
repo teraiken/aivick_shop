@@ -7,15 +7,17 @@ use App\Http\Requests\AreaRequestForStore;
 use App\Http\Requests\AreaRequestForUpdate;
 use App\Models\Area;
 use App\Models\ShippingFee;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class AreaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 地域の一覧を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $maxRecords = 5;
 
@@ -25,22 +27,22 @@ class AreaController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 新規地域の作成フォームを表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         return view('admin.areas.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しく作成された地域をストレージに格納する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param AreaRequestForStore $request
+     * @return RedirectResponse
      */
-    public function store(AreaRequestForStore $request)
+    public function store(AreaRequestForStore $request): RedirectResponse
     {
         $area = new Area;
 
@@ -58,12 +60,12 @@ class AreaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 指定された地域を表示する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return View
      */
-    public function show($id)
+    public function show($id): View
     {
         $area = Area::find($id);
 
@@ -73,13 +75,13 @@ class AreaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * ストレージ内の指定された地域を更新する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param AreaRequestForUpdate $request
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function update(AreaRequestForUpdate $request, $id)
+    public function update(AreaRequestForUpdate $request, $id): RedirectResponse
     {
         $area = Area::find($id);
 
@@ -90,12 +92,12 @@ class AreaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 指定された地域をストレージから削除する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $area = Area::find($id);
 

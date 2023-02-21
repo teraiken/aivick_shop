@@ -4,15 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class CartController extends Controller
 {
-    public function index()
+    /**
+     * カートの一覧を表示する。
+     *
+     * @return View
+     */
+    public function index(): View
     {
         return view('cart.index');
     }
 
-    public function add(Request $request)
+    /**
+     * カートに商品を追加する。
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function add(Request $request): JsonResponse
     {
         $product = Product::onSale()->find($request->id);
 
@@ -47,7 +61,13 @@ class CartController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    /**
+     * カート内の商品の個数を更新する。
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function update(Request $request): RedirectResponse
     {
         $product = Product::onSale()->find($request->id);
 
@@ -72,20 +92,37 @@ class CartController extends Controller
         return to_route('cart.index');
     }
 
-    public function remove(Request $request)
+    /**
+     * カート内の商品を削除する。
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function remove(Request $request): RedirectResponse
     {
         session()->forget('cart.' . $request->id);
 
         return to_route('cart.index');
     }
 
-    public function destroy()
+    /**
+     * カート内を空にする。
+     *
+     * @return RedirectResponse
+     */
+    public function destroy(): RedirectResponse
     {
         session()->forget('cart');
 
         return to_route('cart.index');
     }
 
+    /**
+     * 在庫を確認する。(追加用)
+     *
+     * @param array $product
+     * @return string
+     */
     private function checkStockForAdd(array $product): string
     {
         if ($product['stock'] === 0) {
@@ -102,6 +139,12 @@ class CartController extends Controller
         return $message;
     }
 
+    /**
+     * 在庫を確認する。(更新用)
+     *
+     * @param array $product
+     * @return string
+     */
     private function checkStockForUpdate(array $product): string
     {
         if ($product['stock'] === 0) {

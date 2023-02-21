@@ -13,8 +13,10 @@ use App\Http\Requests\AddressRequest;
 use App\Mail\OrderMail;
 use App\Models\Pref;
 use App\Services\StripeService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class OrderController extends Controller
 {
@@ -25,7 +27,12 @@ class OrderController extends Controller
         $this->stripeService = $stripeService;
     }
 
-    public function index()
+    /**
+     * 注文の一覧を表示する。
+     *
+     * @return View
+     */
+    public function index(): View
     {
         $maxRecords = 5;
 
@@ -34,7 +41,12 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    public function create()
+    /**
+     * 新規注文の作成フォームを表示する。
+     *
+     * @return RedirectResponse|View
+     */
+    public function create(): RedirectResponse|View
     {
         if (empty(session('cart'))) {
             session()->flash('errorMessage', __('cart.invalid_operation'));
@@ -48,7 +60,13 @@ class OrderController extends Controller
         return view('orders.create', compact('addresses', 'prefs', 'card'));
     }
 
-    public function confirm(AddressRequest $request)
+    /**
+     * 新規注文の確認画面を表示する。
+     *
+     * @param AddressRequest $request
+     * @return View
+     */
+    public function confirm(AddressRequest $request): View
     {
         session()->forget('errorMessages');
 
@@ -72,14 +90,24 @@ class OrderController extends Controller
         return view('orders.confirm', compact('pref', 'card'));
     }
 
-    public function short()
+    /**
+     * 新規注文が在庫不足の場合のみ表示する。
+     *
+     * @return View
+     */
+    public function short(): View
     {
         $card = $this->stripeService->getCard(Auth::user());
 
         return view('orders.confirm', compact('card'));
     }
 
-    public function store()
+    /**
+     * 新しく作成された注文をストレージに格納する。
+     *
+     * @return RedirectResponse
+     */
+    public function store(): RedirectResponse
     {
         session()->forget('errorMessages');
 
@@ -144,7 +172,13 @@ class OrderController extends Controller
         return to_route('products.index');
     }
 
-    public function show($id)
+    /**
+     * 指定された注文を表示する。
+     *
+     * @param [type] $id
+     * @return View
+     */
+    public function show($id): View
     {
         $order = Order::whereUserId(Auth::id())->find($id);
 
@@ -153,6 +187,11 @@ class OrderController extends Controller
         return view('orders.show', compact('order', 'orderDetails'));
     }
 
+    /**
+     * 在庫を確認する。
+     *
+     * @return boolean
+     */
     private function checkStock(): bool
     {
         $shortFlag = false;

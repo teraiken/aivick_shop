@@ -9,16 +9,19 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequestForStore;
 use App\Http\Requests\ProductRequestForUpdate;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 商品の一覧を表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $maxRecords = 5;
 
@@ -31,22 +34,22 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 新規商品の作成フォームを表示する。
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         return view('admin.products.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しく作成された商品をストレージに格納する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ProductRequestForStore $request
+     * @return RedirectResponse
      */
-    public function store(ProductRequestForStore $request)
+    public function store(ProductRequestForStore $request): RedirectResponse
     {
         $fileName = $this->getFileName($request);
 
@@ -66,12 +69,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 指定された商品を表示する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return View
      */
-    public function show($id)
+    public function show($id): View
     {
         $product = Product::find($id);
 
@@ -79,12 +82,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 指定された商品を編集するためのフォームを表示する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return View
      */
-    public function edit($id)
+    public function edit($id): View
     {
         $product = Product::find($id);
 
@@ -92,13 +95,13 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * ストレージ内の指定された商品を更新する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ProductRequestForUpdate $request
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function update(ProductRequestForUpdate $request, $id)
+    public function update(ProductRequestForUpdate $request, $id): RedirectResponse
     {
         DB::transaction(function () use ($request, $id) {
             $product = Product::find($id);
@@ -123,12 +126,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 指定された商品をストレージから削除する。
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param [type] $id
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $product = Product::find($id);
 
@@ -137,6 +140,12 @@ class ProductController extends Controller
         return to_route('admin.products.index');
     }
 
+    /**
+     * ファイル名を取得する。
+     *
+     * @param Request $request
+     * @return string
+     */
     private function getFileName(Request $request): string
     {
         $fileName = Carbon::now()->format("YmdHis") . '_' . $request->file('image')->getClientOriginalName();

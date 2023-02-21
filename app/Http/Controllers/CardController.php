@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Services\StripeService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class CardController extends Controller
 {
@@ -16,11 +18,11 @@ class CardController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     * 
-     * @return \Illuminate\Http\Response
+     * 指定されたカードを表示する。
+     *
+     * @return View
      */
-    public function show()
+    public function show(): View
     {
         $card = $this->stripeService->getCard(Auth::user());
 
@@ -28,12 +30,12 @@ class CardController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 新しく作成されたカードをストレージに格納する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         if (Auth::user()->stripe_id) {
             $this->stripeService->updateCustomer($request->stripeToken, Auth::user());
@@ -45,12 +47,12 @@ class CardController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * ストレージ内の指定されたカードを更新する。
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $this->stripeService->deleteCard(Auth::user());
 
@@ -60,11 +62,11 @@ class CardController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     * 
-     * @return \Illuminate\Http\Response
+     * 指定されたカードをストレージから削除する。
+     *
+     * @return RedirectResponse
      */
-    public function destroy()
+    public function destroy(): RedirectResponse
     {
         $this->stripeService->deleteCard(Auth::user());
 
