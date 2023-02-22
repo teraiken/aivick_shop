@@ -12,6 +12,9 @@ const addressForm = document.getElementById("addressForm");
 const addressInputItems = addressForm.getElementsByTagName("input");
 const pref_id = document.getElementById("pref_id");
 
+/**
+ * ラジオボタンで表示内容を切り替える。
+ */
 function switchAddress() {
     if (addressRadios[0].checked) {
         addressId.required = true;
