@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderDetail extends Model
 {
@@ -19,12 +20,22 @@ class OrderDetail extends Model
         'tax_rate',
     ];
 
-    public function order()
+    /**
+     * 注文詳細を所有している注文を取得する。
+     *
+     * @return BelongsTo
+     */
+    public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
-    
-    public function product()
+
+    /**
+     * 注文詳細を所有している商品を取得する。
+     *
+     * @return BelongsTo
+     */
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }

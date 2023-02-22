@@ -9,6 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Address;
 use App\Models\Order;
 use App\Traits\Search;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -45,12 +46,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function addresses()
+    /**
+     * 会員の全ての配送先を取得する。
+     *
+     * @return HasMany
+     */
+    public function addresses(): HasMany
     {
         return $this->hasMany(Address::class);
     }
 
-    public function orders()
+    /**
+     * 会員の全ての注文を取得する。
+     *
+     * @return HasMany
+     */
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }

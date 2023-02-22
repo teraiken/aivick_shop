@@ -2,9 +2,18 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait Search
 {
-    public function scopeSearch($query, $search)
+    /**
+     * 検索キーワードのみを含むようにクエリのスコープを設定する。
+     *
+     * @param Builder $query
+     * @param string|null $search
+     * @return Builder
+     */
+    public function scopeSearch(Builder $query, ?string $search): Builder
     {
         if ($search !== null) {
             $converted = mb_convert_kana($search, 's');
