@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Stripe\Customer;
 use Stripe\Stripe;
 
@@ -12,7 +13,13 @@ class StripeService
         Stripe::setApiKey(config('app.stripe_secret_key'));
     }
 
-    public function getCard($user): ?array
+    /**
+     * カード情報を取得する。
+     *
+     * @param User $user
+     * @return array|null
+     */
+    public function getCard(User $user): ?array
     {
         $card = null;
         [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user->stripe_id);
@@ -34,7 +41,14 @@ class StripeService
         return $card;
     }
 
-    public function createCustomer($token, $user)
+    /**
+     * Customerオブジェクトを作成する。
+     *
+     * @param string $token
+     * @param User $user
+     * @return void
+     */
+    public function createCustomer(string $token, User $user): void
     {
         $customer = Customer::create([
             'source' => $token,
@@ -45,7 +59,14 @@ class StripeService
         $user->save();
     }
 
-    public function updateCustomer($token, $user)
+    /**
+     * Customerオブジェクトを更新する。
+     *
+     * @param string $token
+     * @param User $user
+     * @return void
+     */
+    public function updateCustomer(string $token, User $user): void
     {
         [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user->stripe_id);
         $card = $customer->createSource(
@@ -59,7 +80,13 @@ class StripeService
         );
     }
 
-    public function deleteCard($user)
+    /**
+     * カード情報を削除する。
+     *
+     * @param User $user
+     * @return void
+     */
+    public function deleteCard(User $user): void
     {
         [$stripeId, $customer, $defaultCardId] = $this->getStripeInfo($user->stripe_id);
         $customer->deleteSource(
@@ -69,7 +96,13 @@ class StripeService
         );
     }
 
-    private function getStripeInfo($stripeId)
+    /**
+     * Customerオブジェクト及びそのデフォルトのカードIDを取得する。
+     *
+     * @param string $stripeId
+     * @return array
+     */
+    private function getStripeInfo(string $stripeId): array
     {
         $customer = $defaultCardId = null;
         if (!$stripeId) {
