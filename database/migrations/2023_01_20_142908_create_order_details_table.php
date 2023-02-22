@@ -14,12 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('order_details', function (Blueprint $table) {
+            $table->comment('注文詳細テーブル');
+
             $table->id();
-            $table->foreignId('order_id')->constrained();
-            $table->foreignId('product_id')->constrained();
-            $table->integer('price');
-            $table->integer('quantity');
-            $table->tinyInteger('tax_rate');
+            $table->foreignId('order_id')->comment('注文ID')->constrained();
+            $table->foreignId('product_id')->comment('商品ID')->constrained();
+            $table->integer('price')->comment('税抜価格');
+            $table->integer('quantity')->comment('個数');
+            $table->tinyInteger('tax_rate')->comment('税率');
             $table->timestamps();
         });
     }

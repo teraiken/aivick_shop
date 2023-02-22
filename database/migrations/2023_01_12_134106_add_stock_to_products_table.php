@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->integer('stock')->after('price');
+            $table->integer('stock')->after('price')->comment('在庫数');
         });
     }
 
