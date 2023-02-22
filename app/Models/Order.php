@@ -26,7 +26,7 @@ class Order extends Model
     ];
 
     /**
-     * 検索キーワードを含む会員のみを含むようにクエリのスコープを設定する。
+     * 会員氏名で検索するクエリのスコープを設定する。
      *
      * @param Builder $query
      * @param string|null $search
