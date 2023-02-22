@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('prefs', function (Blueprint $table) {
+            $table->comment('都道府県テーブル');
+
             $table->id();
-            $table->foreignId('area_id')->constrained()->comment('エリアID');
+            $table->foreignId('area_id')->comment('エリアID')->constrained();
             $table->string('name')->unique()->comment('都道府県名');
             $table->timestamps();
         });

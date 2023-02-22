@@ -14,15 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
+            $table->comment('注文テーブル');
+
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('name');
-            $table->string('postal_code');
-            $table->tinyInteger('pref_id');
-            $table->string('address1');
-            $table->string('address2');
-            $table->string('phone_number');
-            $table->integer('status');
+            $table->foreignId('user_id')->comment('会員ID')->constrained();
+            $table->string('name')->comment('宛名');
+            $table->string('postal_code')->comment('郵便番号');
+            $table->tinyInteger('pref_id')->comment('都道府県ID');
+            $table->string('address1')->comment('市区町村');
+            $table->string('address2')->comment('以降の住所');
+            $table->string('phone_number')->comment('電話番号');
+            $table->integer('status')->comment('送料');
             $table->timestamps();
         });
     }
