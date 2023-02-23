@@ -2,7 +2,7 @@ const addCartForm = $(".addCartForm");
 
 $(function () {
     /**
-     * 非同期通信を行う。
+     * 非同期通信を行い、カートに商品を追加する。
      */
     addCartForm.on("submit", function (e) {
         e.preventDefault();
@@ -55,7 +55,7 @@ const removeAddCartForm = function (select, paragraph) {
 };
 
 /**
- * option属性を再表示する。
+ * カートに商品を追加する個数のoption属性を再表示する。
  * @param {*} select
  * @param {*} stock
  */

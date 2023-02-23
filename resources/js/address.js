@@ -13,7 +13,7 @@ const addressInputItems = addressForm.getElementsByTagName("input");
 const pref_id = document.getElementById("pref_id");
 
 /**
- * ラジオボタンで表示内容を切り替える。
+ * ラジオボタンで配送先入力画面の表示内容を切り替える。
  */
 function switchAddress() {
     if (addressRadios[0].checked) {
