@@ -3,6 +3,10 @@ const productImage = document.getElementById("productImage");
 
 image.addEventListener("change", showProductImage);
 
+/**
+ * 選択された商品画像を表示する。
+ * @param {*} e
+ */
 function showProductImage(e) {
     const reader = new FileReader();
 

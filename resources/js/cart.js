@@ -1,6 +1,9 @@
 const addCartForm = $(".addCartForm");
 
 $(function () {
+    /**
+     * 非同期通信を行い、カートに商品を追加する。
+     */
     addCartForm.on("submit", function (e) {
         e.preventDefault();
 
@@ -40,12 +43,22 @@ $(function () {
     });
 });
 
+/**
+ * addCartFormを削除する。
+ * @param {*} select
+ * @param {*} paragraph
+ */
 const removeAddCartForm = function (select, paragraph) {
     // $(this).after(paragraph); では何故か動作しない。。
     select.parent(addCartForm).after(paragraph);
     select.parent(addCartForm).remove();
 };
 
+/**
+ * カートに商品を追加する個数のoption属性を再表示する。
+ * @param {*} select
+ * @param {*} stock
+ */
 const rebuildOptions = function (select, stock) {
     select.children().remove();
     for (let i = 1; i <= stock; i++) {
@@ -54,6 +67,9 @@ const rebuildOptions = function (select, stock) {
     select.val(1);
 };
 
+/**
+ * エラーメッセージを表示する。
+ */
 const showErrorMessage = function () {
     $("html, body").animate({ scrollTop: 0 }, "fast");
     $(".container").prepend(
