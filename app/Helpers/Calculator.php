@@ -7,7 +7,7 @@ use App\Models\Order;
 class Calculator
 {
   /**
-   * 配列の合計金額を算出する。
+   * 配列の数値の合計を算出する。
    *
    * @param array $array
    * @return integer
