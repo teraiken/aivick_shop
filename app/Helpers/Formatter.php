@@ -1,11 +1,17 @@
 <?php
- 
+
 namespace App\Helpers;
 
 use App\Models\Order;
 
 class Formatter
 {
+  /**
+   * 注文の件名を表示する。
+   *
+   * @param Order $order
+   * @return string
+   */
   public static function subject(Order $order): string
   {
     $orderDetails = $order->orderDetails;
@@ -17,7 +23,7 @@ class Formatter
     if ($count === 1) {
       $subject = $firstProductNameAndQuantity;
     } else {
-      $subject = $firstProductNameAndQuantity . '外' . $count-1 . '点';
+      $subject = $firstProductNameAndQuantity . '外' . $count - 1 . '点';
     }
 
     return $subject;

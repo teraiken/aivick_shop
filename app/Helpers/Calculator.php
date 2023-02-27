@@ -6,6 +6,12 @@ use App\Models\Order;
 
 class Calculator
 {
+  /**
+   * 配列の数値の合計を算出する。
+   *
+   * @param array $array
+   * @return integer
+   */
   public static function arraySum(array $array): int
   {
     $total = 0;
@@ -17,6 +23,12 @@ class Calculator
     return $total;
   }
 
+  /**
+   * 注文の支払金額を算出する。
+   *
+   * @param Order $order
+   * @return integer
+   */
   public static function orderSum(Order $order): int
   {
     $subTotal = 0;

@@ -16,8 +16,9 @@ class OrderMail extends Mailable
     public $order;
 
     /**
-     * Create a new message instance.
+     * 新しいメッセージインスタンスを作成する。
      *
+     * @param Order $order
      * @return void
      */
     public function __construct(Order $order)
@@ -26,11 +27,11 @@ class OrderMail extends Mailable
     }
 
     /**
-     * Get the message envelope.
+     * メッセージエンベロープを取得する。
      *
-     * @return \Illuminate\Mail\Mailables\Envelope
+     * @return Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: '【aivick_shop】注文内容のご確認',
@@ -38,11 +39,11 @@ class OrderMail extends Mailable
     }
 
     /**
-     * Get the message content definition.
+     * メッセージ内容を取得する。
      *
-     * @return \Illuminate\Mail\Mailables\Content
+     * @return Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             view: 'orders.mail',
