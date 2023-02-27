@@ -1,13 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
+        @if ($card)
         配送先入力
+        @endif
     </x-slot>
 
     <section class="text-gray-600 body-font relative">
-        <form method="post" action="{{ route('orders.confirm')}}">
-            @csrf
-            <div class="container px-5 mx-auto">
-                <div class="lg:w-1/2 md:w-2/3 mx-auto">
+        <div class="container px-5 mx-auto">
+            <div class="lg:w-1/2 md:w-2/3 mx-auto">
+                @if ($card)
+                <form method="post" action="{{ route('orders.confirm')}}">
+                    @csrf
                     <div class="flex flex-wrap -m-2 pb-2">
                         <div class="p-2 w-full">
                             <div class="relative">
@@ -94,7 +97,6 @@
                         </div>
                     </div>
 
-                    @if ($card)
                     <div class="flex flex-wrap -m-2">
                         <div class="p-2 w-full text-center">
                             <x-primary-button>
@@ -102,11 +104,15 @@
                             </x-primary-button>
                         </div>
                     </div>
-                    @endif
+                </form>
+                @else
+                <div class="text-red-500">
+                    {{ __('card.none') }}<br>
+                    <a href="{{ route('card.show') }}" class="text-blue-500 hover:underline">こちら</a>からカードを登録してください。
                 </div>
+                @endif
             </div>
-            </div>
-        </form>
+        </div>
     </section>
     @push('script')
     @vite(['resources/js/address.js'])
